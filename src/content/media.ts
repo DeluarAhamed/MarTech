@@ -66,3 +66,8 @@ export const floorPlanPdfs = {
     { label: "Upper level plan (PDF)", href: `${WP}/2026/08/Townhome-Upstairs-Final-Floor-Plan.pdf` },
   ],
 } as const;
+
+/** Honest public label for an image (null for confirmed photography). */
+export function provenanceLabel(item: Media): string | null {
+  return item.provenance === "render" ? "Rendering" : item.provenance === "drawing" ? "Drawing" : item.provenance === "unconfirmed" ? "Concept image" : null;
+}

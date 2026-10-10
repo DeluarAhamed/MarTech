@@ -1,24 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import type { Media } from "@/content/media";
+import { Slash } from "./ui";
 
 /**
- * Pinned panel with a ring of renderings around the MAR mark; on desktop (motion allowed) the ring
- * expands and turns as you scroll and the split headline slides apart. Static ring everywhere else.
- * GSAP is fetched only when the panel approaches the viewport.
+ * Pinned panel: headline and tagline on the left, a ring of renderings around the MAR mark on the
+ * right. On desktop (motion allowed) the ring expands and turns as you scroll. The panel is sized to
+ * the viewport on desktop and stacks on mobile, so nothing overlaps at any size.
  */
 export function GalleryRing({
   images,
-  left,
-  right,
+  title,
+  accent,
   children,
 }: {
   images: Media[];
-  left: string;
-  right: string;
-  children: React.ReactNode;
+  title: string;
+  accent: string;
+  children: ReactNode;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -38,12 +39,9 @@ export function GalleryRing({
         if (cancelled) return;
         gsap.registerPlugin(ScrollTrigger);
         const ctx = gsap.context(() => {
-          const tl = gsap.timeline({
-            scrollTrigger: { trigger: root, start: "top top", end: "+=1200", scrub: 0.8, pin: true },
-          });
-          tl.fromTo(root, { "--ring": 0.55, "--spin": "-20deg" }, { "--ring": 1.18, "--spin": "25deg", ease: "none" }, 0)
-            .fromTo("[data-ring-left]", { xPercent: 18 }, { xPercent: 0, ease: "none" }, 0)
-            .fromTo("[data-ring-right]", { xPercent: -18 }, { xPercent: 0, ease: "none" }, 0);
+          gsap
+            .timeline({ scrollTrigger: { trigger: root, start: "top top", end: "+=1100", scrub: 0.8, pin: true } })
+            .fromTo(root, { "--ring": 0.72, "--spin": "-20deg" }, { "--ring": 1.12, "--spin": "20deg", ease: "none" });
         }, root);
         revert = () => ctx.revert();
       },
@@ -62,44 +60,47 @@ export function GalleryRing({
   return (
     <div
       ref={rootRef}
-      className="relative flex min-h-[100svh] flex-col overflow-hidden bg-sand px-5 py-8 [--ring:1] [--spin:0deg] lg:px-8"
+      className="relative grid items-center gap-8 overflow-hidden bg-sand px-5 py-10 [--ring:1] [--spin:0deg] md:px-10 lg:h-[100svh] lg:max-h-[60rem] lg:min-h-[38rem] lg:grid-cols-12 lg:gap-6 lg:px-14 lg:py-10"
     >
-      <p className="label text-stone-ink">Renderings</p>
+      {/* Copy */}
+      <div className="relative z-10 lg:col-span-5">
+        <p className="label flex items-center gap-3 text-stone-ink">
+          <Slash /> Renderings
+        </p>
+        <h2 data-no-split className="mt-6 text-[clamp(2.25rem,4.6vw,4.75rem)] leading-[0.95]">
+          <span className="block">{title}</span>
+          <span className="block text-navy">{accent}</span>
+        </h2>
+        <div className="mt-6 max-w-sm text-[1.02rem] text-stone-ink">{children}</div>
+      </div>
 
-      <div className="relative flex flex-1 items-center justify-center py-16 lg:py-0">
-        {/* Ring */}
-        <div aria-hidden="true" className="relative size-[min(78vw,30rem)] [transform:rotate(var(--spin))]">
+      {/* Ring */}
+      <div className="relative flex items-center justify-center lg:col-span-7 lg:h-full">
+        <div
+          aria-hidden="true"
+          className="relative aspect-square w-[min(70vw,19rem)] [transform:rotate(var(--spin))] md:w-[min(60vw,28rem)] lg:w-[min(46vw,72svh,40rem)]"
+        >
           {images.map((img, i) => (
             <div
               key={img.src}
-              className="absolute top-1/2 left-1/2 h-[18%] w-[27%] -translate-x-1/2 -translate-y-1/2"
+              className="absolute top-1/2 left-1/2 h-[18%] w-[27%]"
               style={{
                 transform: `translate(-50%, -50%) rotate(${i * step}deg) translateY(calc(-38% * var(--ring) * 4.2)) rotate(${-i * step}deg) rotate(calc(-1 * var(--spin)))`,
               }}
             >
-              <div className="relative size-full overflow-hidden bg-carbon/10">
-                <Image src={img.src} alt="" fill sizes="180px" className="object-cover" />
+              <div className="relative size-full overflow-hidden bg-carbon/10 shadow-[0_10px_30px_-12px_rgb(23_26_25/0.35)]">
+                <Image src={img.src} alt="" fill sizes="200px" className="object-cover" />
               </div>
             </div>
           ))}
-          <div className="absolute top-1/2 left-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center [transform:translate(-50%,-50%)_rotate(calc(-1*var(--spin)))]">
-            <svg viewBox="0 0 64 64" className="size-full">
-              <path d="M10 50V14h8l14 20 14-20h8v36h-8V27L32 47 18 27v23z" fill="currentColor" />
+          <div className="absolute top-1/2 left-1/2 grid size-[18%] place-items-center rounded-full bg-white shadow-[0_12px_36px_-12px_rgb(23_26_25/0.35)] [transform:translate(-50%,-50%)_rotate(calc(-1*var(--spin)))]">
+            <svg viewBox="0 0 426 233" className="w-[62%]">
+              <polygon points="0,0 135,0 212.5,77.5 290,0 334,0 194,140 143,89 0,232" fill="#2D366F" />
+              <polygon points="375,0 426,0 426,233 320,127 248.5,198.5 283,233 142,233" fill="#6C7073" />
             </svg>
           </div>
         </div>
-
-        {/* Split headline */}
-        <h2 className="pointer-events-none absolute inset-x-0 top-1/2 hidden -translate-y-1/2 justify-between text-display-m lg:flex">
-          <span data-ring-left>{left}</span>
-          <span data-ring-right>{right}</span>
-        </h2>
-        <h2 className="absolute inset-x-0 top-0 text-center text-display-m lg:hidden">
-          {left} {right}
-        </h2>
       </div>
-
-      <div className="max-w-xs">{children}</div>
     </div>
   );
 }

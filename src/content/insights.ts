@@ -1,3 +1,4 @@
+import { morePosts } from "./insights-library";
 import { media, type Media } from "./media";
 
 // Insights (blog). Structured content blocks keep articles fast, typed and easy to move into the
@@ -27,7 +28,7 @@ export type Post = {
   body: Block[];
 };
 
-export const posts: Post[] = [
+const basePosts: Post[] = [
   {
     slug: "modular-construction-for-developers-guide",
     title: "Modular Construction for Developers: A Practical Guide",
@@ -194,8 +195,25 @@ export const posts: Post[] = [
   },
 ];
 
+export const posts: Post[] = [...basePosts, ...morePosts].sort((a, b) => b.date.localeCompare(a.date));
+
 export function getPost(slug: string) {
   return posts.find((p) => p.slug === slug);
 }
 
 export const topics: Topic[] = ["Developers", "Process", "Housing", "Education", "Service area", "Engineering"];
+
+export const topicSlug = (t: Topic) => t.toLowerCase().replace(/\s+/g, "-");
+
+export function topicFromSlug(slug: string) {
+  return topics.find((t) => topicSlug(t) === slug);
+}
+
+export const topicIntro: Record<Topic, string> = {
+  Developers: "Guides for developers planning modular communities: evaluating manufacturers, underwriting and documentation.",
+  Process: "How modular projects run, from plan review and factory inspections to set day and handover.",
+  Housing: "Single-family, build-to-rent, townhome and ADU planning with modular construction.",
+  Education: "Modular classrooms, offices and campus space for schools and public agencies.",
+  "Service area": "Building modular across the Western states, served from our Salt Lake City factory.",
+  Engineering: "Structure, floor plans and building systems in modular construction.",
+};

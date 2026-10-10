@@ -5,7 +5,9 @@ import { notFound } from "next/navigation";
 import { MadeInUsaTag } from "@/components/made-in-usa";
 import { CtaBand, JsonLd, breadcrumbJsonLd } from "@/components/sections";
 import { Bullet, ButtonLink } from "@/components/ui";
-import { getPost, posts, type Block } from "@/content/insights";
+import { PostCard } from "@/components/post-card";
+import { getPost, posts, topicSlug, type Block } from "@/content/insights";
+import { provenanceLabel } from "@/content/media";
 import { site } from "@/content/site";
 
 export function generateStaticParams() {
@@ -117,7 +119,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
           <nav aria-label="Breadcrumb" className="label text-stone-ink">
             <Link href="/blog/" className="hover:text-navy">Blog</Link>
             <span aria-hidden="true"> / </span>
-            <span>{post.topic}</span>
+            <Link href={`/blog/category/${topicSlug(post.topic)}/`} className="hover:text-navy">{post.topic}</Link>
           </nav>
           <h1 className="hero-line mt-6 max-w-[22ch] overflow-hidden pb-[0.06em] text-[clamp(2.25rem,5vw,4.75rem)] leading-[0.98]">
             <span className="block">{post.title}</span>
@@ -129,7 +131,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
           </div>
           <div className="cut-tr relative mt-10 aspect-[16/9] overflow-hidden bg-carbon/5 [--cut:3rem] lg:aspect-[2.4/1]">
             <Image src={post.image.src} alt={post.image.alt} fill loading="eager" fetchPriority="high" sizes="100vw" className="object-cover" />
-            <span className="label absolute bottom-3 left-3 bg-carbon/60 px-2 py-1 text-[0.6rem] text-white">Rendering</span>
+            {provenanceLabel(post.image) ? <span className="label absolute bottom-3 left-3 bg-carbon/60 px-2 py-1 text-[0.6rem] text-white">{provenanceLabel(post.image)}</span> : null}
           </div>
         </header>
 
@@ -167,15 +169,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
           <ul className="mt-10 grid gap-6 md:grid-cols-3">
             {related.map((p) => (
               <li key={p.slug}>
-                <Link href={`/blog/${p.slug}/`} className="group block h-full bg-white">
-                  <div className="cut-tr relative aspect-[16/10] overflow-hidden [--cut:1.5rem]">
-                    <Image src={p.image.src} alt={p.image.alt} fill sizes="(min-width:768px) 31vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
-                  </div>
-                  <div className="p-6">
-                    <p className="label text-navy">{p.topic}</p>
-                    <h3 className="mt-3 text-lg leading-snug group-hover:text-navy">{p.title}</h3>
-                  </div>
-                </Link>
+                <PostCard post={p} />
               </li>
             ))}
           </ul>

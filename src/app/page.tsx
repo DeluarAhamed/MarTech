@@ -10,7 +10,7 @@ import { PlayFilm } from "@/components/play-film";
 import { Faq, PathPanel } from "@/components/home-sections";
 import { CtaBand } from "@/components/sections";
 import { MadeInUsaSeal, MadeInUsaTag } from "@/components/made-in-usa";
-import { Bullet, ButtonLink, Figure, SectionLabel, cx } from "@/components/ui";
+import { Bullet, ButtonLink, Figure, cx } from "@/components/ui";
 import { NumberedCards, SectionHead } from "@/components/blocks";
 import { capabilities, hero, heroCopy } from "@/content/home";
 import { media, type Media } from "@/content/media";
@@ -165,36 +165,33 @@ export default function HomePage() {
       {/* 05 — Gallery ring */}
       <div className="h-24 lg:h-40" />
       <section className="page-x container-max">
-        <GalleryRing images={ring} left="Engineered off-site." right="Built to scale.">
-          <p className="text-sm">
+        <GalleryRing images={ring} title="Engineered off-site." accent="Built to scale.">
+          <p>
             Every MAR Technology building is designed, engineered and produced in a climate-controlled facility, then
             delivered ready to set on your foundations.
           </p>
-          <div className="mt-5">
+          <div className="mt-7 flex flex-wrap gap-3">
             <ButtonLink href="/models/">All models</ButtonLink>
+            <ButtonLink href="/process/" variant="secondary">Our process</ButtonLink>
           </div>
         </GalleryRing>
       </section>
 
-      {/* 06 — Capabilities */}
+      {/* 06 — Capabilities: heading row, then image and cards side by side, aligned */}
       <section className="page-x container-max section-y">
-        <div className="grid-4 gap-y-12">
-          <div className="md:col-span-2 lg:sticky lg:top-28 lg:self-start lg:pr-[10%]">
-            <SectionLabel code="A-06" className="text-stone-ink">Our modular manufacturing capabilities</SectionLabel>
-            <h2 data-reveal className="mt-5 text-display-m">Your vision. Built to suit.</h2>
-            <p data-reveal className="mt-5 max-w-md text-[1.05rem] text-stone-ink">
-              MAR Technology manufactures more than housing. Residential, commercial, educational, workforce and custom
-              applications give developers more ways to build.
-            </p>
-            <div data-reveal className="mt-8">
-              <ButtonLink href="/solutions/">All solutions</ButtonLink>
-            </div>
-            <div data-reveal className="cut-bl relative mt-10 aspect-[4/3] overflow-hidden [--cut:2.5rem]">
-              <Figure media={media.housing} sizes="(min-width:1024px) 42vw, 100vw" parallax />
-            </div>
+        <SectionHead
+          code="A-06"
+          label="Our modular manufacturing capabilities"
+          title="Your vision. Built to suit."
+          intro="MAR Technology manufactures more than housing. Residential, commercial, educational, workforce and custom applications give developers more ways to build."
+          action={<ButtonLink href="/solutions/">All solutions</ButtonLink>}
+        />
+        <div className="mt-14 grid gap-5 lg:grid-cols-12 lg:items-stretch">
+          <div data-reveal className="cut-bl relative aspect-[4/3] overflow-hidden [--cut:2.5rem] lg:col-span-5 lg:aspect-auto lg:min-h-full">
+            <Figure media={media.housing} sizes="(min-width:1024px) 40vw, 100vw" parallax />
           </div>
-          <div className="md:col-span-2 lg:col-start-3">
-            <NumberedCards columns={2} items={capabilities.map((c) => ({ title: c.title, body: c.body, href: c.href }))} />
+          <div className="lg:col-span-7">
+            <NumberedCards columns={2} className="h-full [&>li]:h-full" items={capabilities.map((c) => ({ title: c.title, body: c.body, href: c.href }))} />
           </div>
         </div>
       </section>

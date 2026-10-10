@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { NumberedCards, SectionHead } from "@/components/blocks";
 import { CounterBand } from "@/components/counter-band";
 import { CoverageMap, MapLegend } from "@/components/coverage-map";
+import { LeadershipGrid } from "@/components/leadership-grid";
 import { MadeInUsaSeal } from "@/components/made-in-usa";
 import { CtaBand, JsonLd, PageIntro, breadcrumbJsonLd } from "@/components/sections";
 import { ButtonLink, Figure, SectionLabel } from "@/components/ui";
@@ -29,6 +29,19 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "About", path: "/about/" }])} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": leadership.map((p) => ({
+            "@type": "Person",
+            name: p.name,
+            jobTitle: p.role,
+            image: p.photo,
+            sameAs: [p.linkedin],
+            worksFor: { "@type": "Organization", name: site.legalName, url: site.url },
+          })),
+        }}
+      />
       <PageIntro
         code="C-00"
         eyebrow="About MAR Technology"
@@ -84,22 +97,9 @@ export default function AboutPage() {
       {/* Leadership */}
       <section id="leadership" className="scroll-mt-24 page-x container-max section-y">
         <SectionHead code="C-04" label="Leadership" title="The team behind every project." intro="Experienced leaders in modular construction, engineering and project delivery, focused on quality, speed and reliability." />
-        <ul data-reveal data-reveal-group className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {leadership.map((p) => (
-            <li key={p.name} className="group flex h-full flex-col border border-hairline bg-white p-6 transition-[border-color,box-shadow] duration-300 hover:border-navy hover:shadow-[0_18px_40px_-24px_rgb(45_54_111/0.45)]">
-              <div className="flex items-center gap-5">
-                <div className="cut-tr relative size-24 shrink-0 overflow-hidden bg-carbon/5 [--cut:0.9rem]">
-                  <Image src={p.photo} alt={`Portrait of ${p.name}`} fill sizes="96px" className="object-cover grayscale transition-[filter] duration-500 group-hover:grayscale-0" />
-                </div>
-                <div>
-                  <h3 className="text-xl leading-tight">{p.name}</h3>
-                  <p className="label mt-2 text-navy">{p.role}</p>
-                </div>
-              </div>
-              <p className="mt-6 text-[0.95rem] text-stone-ink">{p.bio}</p>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-14">
+          <LeadershipGrid />
+        </div>
       </section>
 
       {/* Principles */}
