@@ -63,7 +63,7 @@ export default function HomePage() {
         </div>
 
         <div className="relative mt-5 lg:mt-7">
-          <div className="cut-tr relative aspect-[4/5] overflow-hidden bg-carbon [--cut:3rem] sm:aspect-[16/10] lg:aspect-auto lg:h-[max(32rem,calc(100svh-19rem))] lg:[--cut:7rem]">
+          <div className="cut-tr relative aspect-[4/3] overflow-hidden bg-carbon [--cut:2.25rem] sm:aspect-[16/10] sm:[--cut:3rem] lg:aspect-auto lg:h-[max(32rem,calc(100svh-19rem))] lg:[--cut:7rem]">
             <HeroMedia image={hero.image} video={hero.video} />
             <div aria-hidden="true" className="absolute inset-0 hidden bg-gradient-to-tr from-carbon/90 via-carbon/35 to-transparent lg:block" />
             <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2 lg:top-5 lg:left-5">

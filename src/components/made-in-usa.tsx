@@ -12,7 +12,7 @@ export function MadeInUsaTag({ tone = "light", detail = false, className }: { to
   return (
     <span
       className={cx(
-        "label inline-flex items-center gap-2.5 border px-2.5 py-1.5 text-[0.65rem] leading-none",
+        "label inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 border px-2.5 py-1.5 text-[0.65rem] leading-none [&>span]:whitespace-nowrap",
         dark ? "border-ivory/30 text-ivory" : "border-carbon/25 text-carbon",
         className,
       )}
