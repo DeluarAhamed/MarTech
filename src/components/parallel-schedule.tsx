@@ -75,14 +75,14 @@ export function ParallelSchedule() {
                   <div
                     key={b.label}
                     className={cx(
-                      "ps-bar cut-tr flex min-h-12 items-center px-4 text-sm font-semibold [--cut:0.7rem] lg:absolute lg:inset-y-0 lg:min-h-0",
+                      "ps-bar cut-tr flex min-h-12 items-center px-3 text-[0.8rem] leading-tight font-semibold [--cut:0.7rem] lg:absolute lg:inset-y-0 lg:min-h-0",
                       lane.tone === "white" && "bg-white text-navy",
                       lane.tone === "bronze" && "bg-bronze text-carbon",
                       lane.tone === "ghost" && "border border-white/25 text-white/60 [clip-path:none]",
                     )}
                     style={{ left: `${b.from}%`, width: `calc(${b.to - b.from}% - 4px)`, transitionDelay: `${i * 110}ms` }}
                   >
-                    <span className="truncate">{b.label}</span>
+                    <span className="line-clamp-2">{b.label}</span>
                   </div>
                 );
               })}
