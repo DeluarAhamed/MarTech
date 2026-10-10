@@ -69,7 +69,7 @@ export function HeroMedia({ image, video }: { image: Media; video: HeroVideo | n
 
   return (
     <div ref={wrapRef} className="absolute inset-0 overflow-hidden">
-      <div ref={layerRef} className="absolute inset-0 -bottom-[14%] will-change-transform">
+      <div ref={layerRef} className="absolute inset-0 -bottom-[14%]">
         <div className="absolute inset-0 motion-safe:animate-[hero-settle_2.4s_var(--ease-out-expo)_both]">
           <Image
             src={image.src}

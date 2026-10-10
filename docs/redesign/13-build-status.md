@@ -1,5 +1,9 @@
 # 13 — Build Status
 
+> **2026-10-10 — Staging deployed.** https://mar-technology.vercel.app (Vercel project `mar-technology`, auto-deploys from `main` of github.com/DeluarAhamed/MarTech). Search indexing is blocked on staging (robots.txt, `X-Robots-Tag`, meta robots) until `NEXT_PUBLIC_ALLOW_INDEXING=true` is set at cutover. Lead submissions return 503 until Supabase env vars are added.
+>
+> **Layout rework (client request):** homepage and shared components now follow the Construction Désourdy layout system — full-width wordmark over cinematic media, 4-column grid with 20px margins, light statement type with first-line indent, staggered showcase cards with bullet/name/number captions, centred "Explore" block, pinned ring collage panel, services-style numbered cards beside a sticky heading and edge-bleeding image, history-style FLEX™ block, full-bleed featured model with glass caption, light 4-column footer, pill buttons with bullet. MAR copy, imagery and palette only — no reference copy or assets.
+
 **Updated:** 2026-10-10 · **Phase:** design foundation + homepage + catalog + lead capture (staging-ready, not deployed)
 
 ## Client decisions applied (2026-10-09)
