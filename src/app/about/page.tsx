@@ -71,7 +71,7 @@ export default function AboutPage() {
           </div>
           <div className="relative md:col-span-2 lg:col-start-3 lg:pl-[12%]">
             <Figure media={media.solterraLiving} aspect="aspect-[4/5]" className="cut-tr [--cut:2.5rem]" sizes="(min-width:1024px) 40vw, 100vw" parallax />
-            <MadeInUsaSeal className="absolute -bottom-10 -left-4 hidden lg:grid" />
+            <MadeInUsaSeal className="absolute right-6 bottom-6 z-10 hidden size-28 md:grid lg:right-8 lg:bottom-8" />
           </div>
         </div>
       </section>
