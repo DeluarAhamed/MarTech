@@ -146,7 +146,7 @@ export default function DevelopersPage() {
             code="D-04"
             label="Start from a standard"
             title="Three engineered models. Or your plans."
-            action={<ButtonLink href="/models/" variant="secondary">Compare models</ButtonLink>}
+            action={<ButtonLink href="/models/#compare" variant="secondary">Compare models</ButtonLink>}
           />
           <div className="mt-14 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {models.map((m) => (

@@ -65,6 +65,22 @@ export function SiteHeader() {
     closeTimer.current = window.setTimeout(() => setOpen(null), 140);
   }, []);
 
+  // Menu links close the menu. Same-page hash links (e.g. /models/#compare while on /models/) are
+  // scrolled manually: route-change effects don't fire, and Next skips the scroll if the hash is unchanged.
+  const onNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    window.clearTimeout(closeTimer.current);
+    setOpen(null);
+    dialogRef.current?.close();
+    const [path, hash] = href.split("#");
+    if (!hash || path !== pathname || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const target = document.getElementById(hash);
+    if (!target) return;
+    e.preventDefault();
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    history.replaceState(history.state, "", `#${hash}`);
+  };
+
   const isActive = (href: string) => href !== "/" && pathname.startsWith(href.replace(/#.*$/, ""));
 
   return (
@@ -174,7 +190,7 @@ export function SiteHeader() {
                       <ul className="mt-4 space-y-1">
                         {col.links.map((l) => (
                           <li key={l.href}>
-                            <Link href={l.href} className="group/l -mx-3 flex items-start gap-3 rounded-md px-3 py-2.5 transition-colors hover:bg-navy-tint">
+                            <Link href={l.href} onClick={(e) => onNavClick(e, l.href)} className="group/l -mx-3 flex items-start gap-3 rounded-md px-3 py-2.5 transition-colors hover:bg-navy-tint">
                               <span className="mt-2 size-1.5 shrink-0 rounded-full bg-navy/30 transition-colors group-hover/l:bg-navy" />
                               <span>
                                 <span className="block font-semibold text-carbon group-hover/l:text-navy">{l.label}</span>
@@ -188,7 +204,7 @@ export function SiteHeader() {
                   ))}
                 </div>
                 {item.feature ? (
-                  <Link href={item.feature.href} className="group/f col-span-4 block">
+                  <Link href={item.feature.href} onClick={(e) => onNavClick(e, item.feature!.href)} className="group/f col-span-4 block">
                     <div className="cut-tr relative aspect-[16/10] overflow-hidden bg-carbon/5 [--cut:1.75rem]">
                       <Image src={item.feature.image} alt="" fill sizes="30vw" className="object-cover transition-transform duration-700 group-hover/f:scale-105" />
                       <span className="label absolute bottom-2 left-2 bg-carbon/60 px-1.5 py-1 text-[0.6rem] text-white">Rendering</span>
@@ -243,7 +259,7 @@ export function SiteHeader() {
                       <ul className="pb-4">
                         {item.columns.flatMap((c) => c.links).map((l) => (
                           <li key={l.href}>
-                            <Link href={l.href} onClick={() => dialogRef.current?.close()} className="block py-2.5">
+                            <Link href={l.href} onClick={(e) => onNavClick(e, l.href)} className="block py-2.5">
                               <span className="block font-semibold">{l.label}</span>
                               {l.description ? <span className="block text-sm text-stone-ink">{l.description}</span> : null}
                             </Link>
