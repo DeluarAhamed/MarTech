@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+/* Design tokens — docs/redesign/05-design-system.md, layout system after the approved
+   Construction Désourdy direction: white page, 20px margins, 4-column grid, black-weight headings,
+   light statement type, pill buttons. Palette stays MAR's approved colours. */
+@theme {
+  --color-ivory: #f5f3ee;
+  --color-sand: #ece8e1; /* panel tone derived from ivory for the gallery panel */
+  --color-carbon: #171a19;
+  --color-carbon-2: #222624;
+  --color-stone: #80857d;
+  --color-stone-ink: #5f645d; /* AA on white/ivory for small text */
+  --color-bronze: #b49c7b; /* decorative on light; AA on carbon */
+  --color-bronze-ink: #7a6548; /* AA on light for small accent text */
+  --color-hairline: rgb(23 26 25 / 0.14);
+  --color-hairline-inverse: rgb(245 243 238 / 0.18);
+  --color-danger: #a23b2a;
+
+  --font-display: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* Interior page titles */
+  --text-display-xl: clamp(3.5rem, 10.5vw, 11rem);
+  --text-display-xl--line-height: 0.88;
+  --text-display-xl--letter-spacing: -0.045em;
+  --text-display-l: clamp(2.75rem, 6vw, 6.25rem);
+  --text-display-l--line-height: 0.92;
+  --text-display-l--letter-spacing: -0.04em;
+  /* Section headings (≈48px at desktop, black weight) */
+  --text-display-m: clamp(2rem, 3.4vw, 3rem);
+  --text-display-m--line-height: 1;
+  --text-display-m--letter-spacing: -0.025em;
+  /* Opening statements (light weight) */
+  --text-statement: clamp(1.5rem, 2.9vw, 2.625rem);
+  --text-statement--line-height: 1.2;
+  --text-statement--letter-spacing: -0.012em;
+  --text-h2: clamp(1.75rem, 2.6vw, 2.75rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: clamp(1.25rem, 1.6vw, 1.5rem);
+  --text-h3--line-height: 1.2;
+  --text-body-l: 1.25rem;
+  --text-body-l--line-height: 1.5;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.3;
+  --text-label--letter-spacing: 0.08em;
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --breakpoint-xs: 30rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background-color: #ffffff;
+    color: var(--color-carbon);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-wrap: balance;
+  }
+  h3 { font-weight: 600; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-bronze); color: var(--color-carbon); }
+  :focus-visible {
+    outline: 2px solid var(--color-bronze-ink);
+    outline-offset: 2px;
+  }
+  .on-dark :focus-visible { outline-color: var(--color-bronze); }
+}
+
+@layer components {
+  /* 20px page margins at every size, like the reference layout */
+  .page-x { padding-inline: 1.25rem; }
+  .container-max { margin-inline: auto; max-width: 110rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); column-gap: 1.25rem; }
+  @media (min-width: 48rem) { .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 64rem) { .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+  .section-y { padding-block: clamp(5rem, 11vw, 12.5rem); }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    letter-spacing: var(--text-label--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .statement {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: var(--text-statement);
+    line-height: var(--text-statement--line-height);
+    letter-spacing: var(--text-statement--letter-spacing);
+  }
+
+  /* Legacy hook kept as a no-op so existing markup stays valid */
+  .module-grid { background-image: none; }
+}
+
+/* Motion: content is visible by default. An inline head script adds "motion-ready" before first paint
+   (only when reduced motion is NOT requested); reveal elements are then hidden until MotionRoot's
+   IntersectionObserver adds "is-in". If MotionRoot never runs ("reveal-on" missing), a CSS fallback shows all. */
+html.motion-ready [data-reveal]:not([data-reveal-group]):not([data-reveal='clip']),
+html.motion-ready [data-reveal-group] > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.85s var(--ease-out-expo), transform 0.85s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.motion-ready [data-reveal='clip'] {
+  clip-path: inset(10% 0% 10% 0%);
+  transform: scale(1.04);
+  transition: clip-path 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo);
+}
+html.motion-ready [data-reveal].is-in:not([data-reveal-group]),
+html.motion-ready [data-reveal-group].is-in > * {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0% 0% 0% 0%);
+}
+html.motion-ready:not(.reveal-on) [data-reveal]:not([data-reveal-group]),
+html.motion-ready:not(.reveal-on) [data-reveal-group] > * { animation: reveal-fallback 0.6s ease-out 1.8s forwards; }
+@keyframes reveal-fallback { to { opacity: 1; transform: none; clip-path: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Cinematic hero (CSS-only so it never waits on JS; disabled by the reduced-motion rule above) */
+@keyframes hero-settle {
+  from { transform: scale(1.1); }
+  to { transform: scale(1); }
+}
+@keyframes line-rise {
+  from { transform: translateY(105%); }
+  to { transform: translateY(0); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-line > span { display: block; animation: line-rise 1.1s var(--ease-out-expo) both; }
+  .hero-line:nth-child(2) > span { animation-delay: 0.12s; }
+  .hero-fade { animation: fade-up 0.9s var(--ease-out-expo) 0.45s both; }
+  .hero-fade-late { animation: fade-up 0.9s var(--ease-out-expo) 0.65s both; }
+}
+
+/* Route transitions (React <ViewTransition> in app/template.tsx) */
+::view-transition { pointer-events: none; }
+::view-transition-old(.page-exit) { animation: 200ms ease-in both vt-fade-out; }
+::view-transition-new(.page-enter) { animation: 520ms var(--ease-out-expo) 120ms both vt-rise; }
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-rise { from { opacity: 0; translate: 0 24px; } }
+
+/* Keep the header anchored during route transitions */
+::view-transition-group(site-header) { animation: none; z-index: 100; }
+::view-transition-old(site-header) { display: none; }
+::view-transition-new(site-header) { animation: none; }
+
+/* Model card → model hero morph */
+::view-transition-group(.morph) { animation-duration: 600ms; animation-timing-function: var(--ease-out-expo); }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) { animation-duration: 0s !important; animation-delay: 0s !important; }
+}
