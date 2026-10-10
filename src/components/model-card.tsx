@@ -14,7 +14,7 @@ export function ModelCard({ model, eager }: { model: Model; eager?: boolean }) {
 
   return (
     <article className="group/card relative flex flex-col">
-      <div className="relative aspect-[4/3] overflow-hidden bg-carbon/5">
+      <div className="cut-tr relative aspect-[4/3] overflow-hidden bg-carbon/5 [--cut:2rem]">
         <ViewTransition name={`model-${model.slug}`} share="morph" default="none">
           <div className="absolute inset-0">
             <Image

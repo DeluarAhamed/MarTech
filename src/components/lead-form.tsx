@@ -8,7 +8,7 @@ import { usStates } from "@/lib/us-states";
 import { track } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
 import { plansStatuses, projectLeadSchema, projectStages, projectTypes, roles, timelines } from "@/lib/lead-schema";
-import { Arrow, cx } from "./ui";
+import { Bullet, cx } from "./ui";
 
 type Data = {
   projectType: string;
@@ -90,6 +90,7 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
   const [serverError, setServerError] = useState("");
+  const [mailFallback, setMailFallback] = useState("");
   const startedAt = useRef(0);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
@@ -159,6 +160,7 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
   async function submit() {
     setStatus("sending");
     setServerError("");
+    setMailFallback("");
     try {
       const res = await fetch("/api/leads/", {
         method: "POST",
@@ -172,6 +174,12 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
         }),
       });
       const json = (await res.json()) as { ok: boolean; error?: string };
+      if (res.status >= 500) {
+        // Storage not reachable: keep the enquiry alive via the visitor's own email client.
+        setMailFallback(buildMailto(data));
+        track("lead_fallback_offered", { form_type: "project" });
+        throw new Error("We couldn't submit your request online right now. You can send the same details to our sales team by email in one click:");
+      }
       if (!res.ok || !json.ok) throw new Error(json.error ?? "Something went wrong.");
       track("generate_lead", { form_type: "project", project_type: data.projectType });
       try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
@@ -200,7 +208,7 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
           <span>{Math.round(((step + 1) / STEPS.length) * 100)}%</span>
         </div>
         <div className="mt-3 h-px w-full bg-hairline" aria-hidden="true">
-          <div className="h-px bg-carbon transition-[width] duration-500" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
+          <div className="h-px bg-navy transition-[width] duration-500" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
         </div>
       </div>
 
@@ -347,7 +355,18 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
       </div>
 
       {serverError ? (
-        <p role="alert" className="mt-8 border-l-2 border-danger bg-danger/5 p-4 text-sm">{serverError}</p>
+        <div role="alert" className="mt-8 border-l-2 border-danger bg-danger/5 p-4 text-sm">
+          <p>{serverError}</p>
+          {mailFallback ? (
+            <a
+              href={mailFallback}
+              onClick={() => track("lead_fallback_email", { form_type: "project" })}
+              className="mt-3 inline-flex min-h-11 items-center gap-2.5 rounded-full bg-navy px-5 text-[0.75rem] font-medium tracking-[0.06em] text-white uppercase"
+            >
+              Email my project details
+            </a>
+          ) : null}
+        </div>
       ) : null}
 
       <div className="mt-12 flex items-center justify-between gap-4 border-t border-hairline pt-8">
@@ -359,14 +378,40 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
         <button
           type="submit"
           disabled={status === "sending"}
-          className="group inline-flex min-h-12 items-center gap-3 bg-carbon px-7 font-medium text-ivory transition-colors hover:bg-bronze-ink disabled:opacity-60"
+          className="group inline-flex min-h-12 items-center gap-3 rounded-full bg-navy px-7 text-[0.8125rem] font-medium tracking-[0.04em] text-white uppercase transition-colors hover:bg-navy-2 disabled:opacity-60"
         >
+          <Bullet />
           {step === STEPS.length - 1 ? (status === "sending" ? "Sending…" : "Send project details") : "Continue"}
-          <Arrow />
         </button>
       </div>
     </form>
   );
+}
+
+function labelOf(list: readonly { value: string; label: string }[], value: string) {
+  return list.find((o) => o.value === value)?.label ?? value;
+}
+
+/** Pre-filled email to sales with everything the visitor entered (used only when online submission fails). */
+function buildMailto(d: Data) {
+  const lines = [
+    `Project type: ${labelOf(projectTypes, d.projectType)}`,
+    `Scale: ${d.unitsUnknown || !d.units ? "Not sure yet" : d.units}`,
+    `Models of interest: ${d.modelInterest.join(", ") || "—"}`,
+    `Location: ${d.city}, ${d.state} ${d.zip}`.trim(),
+    `Project stage: ${labelOf(projectStages, d.projectStage)}`,
+    `Target delivery: ${labelOf(timelines, d.timeline)}`,
+    `Plans: ${labelOf(plansStatuses, d.plansStatus)}`,
+    `Name: ${d.firstName} ${d.lastName}`,
+    `Company: ${d.company}`,
+    `Role: ${labelOf(roles, d.role)}`,
+    `Email: ${d.email}`,
+    `Phone: ${d.phone || "—"}`,
+    "",
+    d.message,
+  ];
+  const subject = `Project enquiry — ${labelOf(projectTypes, d.projectType)} — ${d.company}`;
+  return `mailto:${site.contacts.sales.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
 
 function inputClass(invalid: boolean) {
@@ -379,7 +424,7 @@ function inputClass(invalid: boolean) {
 function choiceClass(checked: boolean) {
   return cx(
     "flex min-h-14 cursor-pointer items-center gap-3 border px-4 py-3 text-[0.95rem] transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-bronze-ink",
-    checked ? "border-carbon bg-carbon text-ivory" : "border-carbon/20 bg-white hover:border-carbon/60",
+    checked ? "border-navy bg-navy text-white" : "border-carbon/20 bg-white hover:border-navy/60",
   );
 }
 

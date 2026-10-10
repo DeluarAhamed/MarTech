@@ -4,6 +4,11 @@
    Construction Désourdy direction: white page, 20px margins, 4-column grid, black-weight headings,
    light statement type, pill buttons. Palette stays MAR's approved colours. */
 @theme {
+  /* Brand (sampled from the MAR Technology logo) */
+  --color-navy: #2d366f; /* 11:1 on white */
+  --color-navy-2: #232a59;
+  --color-navy-tint: #e9ebf3;
+  --color-brand-grey: #6c7073; /* 5:1 on white */
   --color-ivory: #f5f3ee;
   --color-sand: #ece8e1; /* panel tone derived from ivory for the gallery panel */
   --color-carbon: #171a19;
@@ -16,8 +21,9 @@
   --color-hairline-inverse: rgb(245 243 238 / 0.18);
   --color-danger: #a23b2a;
 
-  --font-display: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-brand-face), ui-sans-serif, system-ui, sans-serif;
+  --font-brand: var(--font-brand-face), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-body-face), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 
   /* Interior page titles */
@@ -65,10 +71,11 @@
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 800;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
-  h3 { font-weight: 600; }
+  h3 { font-weight: 600; letter-spacing: -0.01em; }
   p { text-wrap: pretty; }
   ::selection { background: var(--color-bronze); color: var(--color-carbon); }
   :focus-visible {
@@ -86,6 +93,7 @@
   @media (min-width: 48rem) { .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (min-width: 64rem) { .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
+
   .section-y { padding-block: clamp(5rem, 11vw, 12.5rem); }
 
   .label {
@@ -102,6 +110,18 @@
     font-size: var(--text-statement);
     line-height: var(--text-statement--line-height);
     letter-spacing: var(--text-statement--letter-spacing);
+  }
+
+  /* Logo-derived diagonal cut (45°, like the mark). --cut sets the size. */
+  .cut-tr { clip-path: polygon(0 0, calc(100% - var(--cut, 2.5rem)) 0, 100% var(--cut, 2.5rem), 100% 100%, 0 100%); }
+  .cut-bl { clip-path: polygon(0 0, 100% 0, 100% 100%, var(--cut, 2.5rem) 100%, 0 calc(100% - var(--cut, 2.5rem))); }
+  .cut-tr-bl { clip-path: polygon(0 0, calc(100% - var(--cut, 2.5rem)) 0, 100% var(--cut, 2.5rem), 100% 100%, var(--cut, 2.5rem) 100%, 0 calc(100% - var(--cut, 2.5rem))); }
+
+  /* Fine film grain for panels (inline SVG noise, no request) */
+  .grain { position: relative; isolation: isolate; }
+  .grain::after {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.35; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27160%27 height=%27160%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix values=%270 0 0 0 0.45 0 0 0 0 0.45 0 0 0 0 0.45 0 0 0 0.18 0%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E");
   }
 
   /* Legacy hook kept as a no-op so existing markup stays valid */

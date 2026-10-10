@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ViewTransition } from "react";
 import { GalleryRing } from "@/components/gallery-ring";
 import { HeroMedia } from "@/components/hero-media";
+import { Faq, PathPanel } from "@/components/home-sections";
 import { MadeInUsaTag } from "@/components/made-in-usa";
 import { Bullet, ButtonLink, Figure, cx } from "@/components/ui";
 import { approvedClaim, type ClaimKey } from "@/content/claims";
@@ -47,25 +48,66 @@ export default function HomePage() {
 
   return (
     <>
-      <h1 className="sr-only">MAR Technology — U.S. modular manufacturer, engineered for developers</h1>
-
-      {/* 01 — Wordmark + cinematic media */}
+      {/* 01 — Brand wordmark (logo lockup at display scale) + cinematic media with the value proposition */}
       <section className="page-x container-max pt-16 md:pt-20">
         <p
           aria-hidden="true"
-          className="hero-line overflow-hidden font-display leading-[0.8] font-black tracking-[-0.055em] whitespace-nowrap [container-type:inline-size]"
+          className="hero-line overflow-hidden font-brand leading-[0.82] font-bold text-navy whitespace-nowrap [container-type:inline-size]"
         >
-          <span className="block text-[10.62cqw] uppercase">MAR Technology</span>
+          <span className="block text-[11.65cqw] tracking-[-0.01em] uppercase">MAR Technology</span>
         </p>
-        <div className="relative mt-4 aspect-[4/5] overflow-hidden bg-carbon sm:aspect-[16/10] lg:mt-5 lg:aspect-[2.1/1]">
-          <HeroMedia image={hero.image} video={hero.video} />
-          <div className="absolute inset-x-0 top-0 flex items-start justify-between p-4 lg:p-5">
-            <MadeInUsaTag tone="dark" className="bg-carbon/40 backdrop-blur-sm" />
-            {hero.video?.provenance !== "footage" ? (
-              <span className="label bg-carbon/50 px-2 py-1 text-[0.625rem] text-white/85">Rendering</span>
-            ) : null}
+        <div aria-hidden="true" className="hero-fade mt-3 flex items-center gap-4 text-brand-grey md:mt-4">
+          <span className="h-[3px] flex-1 bg-navy" />
+          <span className="font-brand text-[clamp(0.85rem,2.2vw,2rem)] font-semibold tracking-[0.18em] uppercase">Building Systems</span>
+          <span className="h-[3px] flex-1 bg-navy" />
+        </div>
+
+        <div className="relative mt-5 lg:mt-7">
+          <div className="cut-tr relative aspect-[4/5] overflow-hidden bg-carbon [--cut:3rem] sm:aspect-[16/10] lg:aspect-auto lg:h-[max(32rem,calc(100svh-19rem))] lg:[--cut:7rem]">
+            <HeroMedia image={hero.image} video={hero.video} />
+            <div aria-hidden="true" className="absolute inset-0 hidden bg-gradient-to-tr from-carbon/90 via-carbon/35 to-transparent lg:block" />
+            <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2 lg:top-5 lg:left-5">
+              <MadeInUsaTag tone="dark" className="bg-carbon/40 backdrop-blur-sm" />
+              {hero.video?.provenance !== "footage" ? (
+                <span className="label bg-carbon/50 px-2 py-1.5 text-[0.625rem] leading-none text-white/85">Rendering</span>
+              ) : null}
+            </div>
+          </div>
+
+          {/* Value proposition: overlaid on desktop, below the image on small screens */}
+          <div className="mt-6 lg:absolute lg:bottom-0 lg:left-0 lg:mt-0 lg:max-w-[46rem] lg:p-10 lg:text-white">
+            <h1 className="hero-fade font-display text-[clamp(2rem,4.2vw,4rem)] leading-[0.95] font-bold tracking-[-0.025em]">
+              Modular buildings, engineered for developers.
+            </h1>
+            <p className="hero-fade-late mt-4 max-w-xl text-[1.05rem] text-stone-ink lg:text-white/80">
+              Homes, townhomes, classrooms and flex space — manufactured in our Salt Lake City facility while your site
+              is prepared. Serving developers nationwide.
+            </p>
+            <div className="hero-fade-late mt-7 flex flex-wrap gap-3">
+              <ButtonLink href="/contact/" data-cta-location="hero" className="lg:bg-white lg:text-navy lg:hover:bg-ivory">
+                Start a project
+              </ButtonLink>
+              <ButtonLink href="/models/" variant="secondary" className="lg:border-white/40 lg:text-white lg:hover:border-white lg:hover:text-white">
+                Explore models
+              </ButtonLink>
+            </div>
           </div>
         </div>
+
+        {/* At a glance — product facts only (no unverified statistics) */}
+        <dl className="grid-4 mt-12 gap-y-6 border-y border-hairline py-6 lg:mt-16">
+          {[
+            ["Standard models", "3 + your plans"],
+            ["Footprints", "12′ × 40′ to 36′ × 48′"],
+            ["Structure", "Steel-framed modules"],
+            ["Enquiries", "All 50 states welcome"],
+          ].map(([k, v]) => (
+            <div key={k} className="flex items-baseline justify-between gap-4 md:block">
+              <dt className="label text-stone-ink">{k}</dt>
+              <dd className="font-display text-lg font-semibold md:mt-2 md:text-2xl">{v}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* 02 — Statement */}
@@ -76,9 +118,10 @@ export default function HomePage() {
           </div>
           <div className="md:col-span-2 lg:col-span-3">
             <p data-reveal className="statement lg:indent-[33.5%]">
-              <strong className="font-extrabold">Engineered for developers.</strong> {heroCopy.sub} Whether it&apos;s
-              temporary housing, classrooms, office space, single-family communities, ADUs or multifamily, MAR
-              Technology manufactures your buildings off-site in Salt Lake City — while your site is prepared.
+              <strong className="font-bold text-navy">Built for developers, not one-off projects.</strong> Whether it&apos;s
+              temporary housing, classrooms, office space, single-family communities, ADUs or multifamily, we speak
+              your language — an off-site model that controls the variables, with fixed-price bids for forecastable
+              planning. {heroCopy.sub}
             </p>
             <div data-reveal className="mt-10 flex flex-wrap gap-3">
               <ButtonLink href="/about/">About us</ButtonLink>
@@ -121,7 +164,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 04b — Audience paths */}
+      <PathPanel />
+
       {/* 05 — Gallery ring */}
+      <div className="h-24 lg:h-40" />
       <section className="page-x container-max">
         <GalleryRing images={ring} left="Engineered off-site." right="Built to scale.">
           <p className="text-sm">
@@ -229,11 +276,14 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div data-reveal="clip" className="relative aspect-[3/4] lg:col-span-2 lg:col-start-3 lg:ml-[25%] lg:aspect-[3/5]">
+          <div data-reveal className="cut-bl relative aspect-[3/4] [--cut:4rem] lg:col-span-2 lg:col-start-3 lg:ml-[25%] lg:aspect-[3/5]">
             <Figure media={media.moduleCommunity} sizes="(min-width:1024px) 38vw, 100vw" />
           </div>
         </div>
       </section>
+
+      {/* 08b — FAQ */}
+      <Faq />
 
       {/* 09 — Featured, full bleed */}
       <section aria-label="Featured model">
@@ -261,7 +311,7 @@ export default function HomePage() {
 
 function ShowcaseCard({ item, className, size }: { item: Showcase; className?: string; size: "lg" | "sm" }) {
   const image = (
-    <div className={cx("relative overflow-hidden bg-carbon/5", size === "lg" ? "aspect-[7/5]" : "aspect-[7/5]")}>
+    <div className={cx("cut-tr relative aspect-[7/5] overflow-hidden bg-carbon/5", size === "lg" ? "[--cut:3.5rem]" : "[--cut:2rem]")}>
       <Image
         src={item.image.src}
         alt={item.image.alt}

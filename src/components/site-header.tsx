@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { primaryNav, site } from "@/content/site";
 import { track } from "@/lib/analytics";
-import { cx } from "./ui";
+import { Bullet, cx } from "./ui";
 import { Wordmark } from "./wordmark";
 
 /**
@@ -83,8 +83,9 @@ export function SiteHeader() {
             <Link
               href="/contact/"
               data-cta-location="header"
-              className="hidden py-2 text-[0.95rem] font-light hover:underline hover:underline-offset-4 sm:inline-block"
+              className="group hidden min-h-10 items-center gap-2.5 rounded-full bg-navy px-5 text-[0.75rem] font-medium tracking-[0.06em] text-white uppercase transition-colors hover:bg-navy-2 sm:inline-flex"
             >
+              <Bullet />
               Start a project
             </Link>
             <button
@@ -140,7 +141,7 @@ export function SiteHeader() {
               href="/contact/"
               data-cta-location="mobile_menu"
               onClick={() => dialogRef.current?.close()}
-              className="flex min-h-14 items-center justify-center gap-3 rounded-full bg-carbon px-6 text-[0.8125rem] font-medium tracking-[0.04em] text-white uppercase"
+              className="flex min-h-14 items-center justify-center gap-3 rounded-full bg-navy px-6 text-[0.8125rem] font-medium tracking-[0.04em] text-white uppercase"
             >
               Start a project
             </Link>

@@ -43,7 +43,7 @@ export function PageIntro({
       </div>
       {image ? (
         <div className="page-x container-max mt-14 md:mt-20">
-          <Figure media={image} aspect="aspect-[4/5] sm:aspect-[16/10] lg:aspect-[2.1/1]" sizes="100vw" eager />
+          <Figure media={image} aspect="aspect-[4/5] sm:aspect-[16/10] lg:aspect-[2.1/1]" className="cut-tr [--cut:3rem] lg:[--cut:6rem]" sizes="100vw" eager />
         </div>
       ) : (
         <div className="h-16 md:h-24" />
@@ -181,6 +181,7 @@ export function organizationJsonLd() {
     name: site.legalName,
     alternateName: site.name,
     url: site.url,
+    logo: `${site.url}/brand/mar-technology-logo.png`,
     address: address(hq),
     location: [
       { "@type": "Place", name: factory.label, address: address(factory) },

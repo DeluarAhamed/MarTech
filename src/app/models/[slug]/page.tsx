@@ -78,7 +78,7 @@ export default async function ModelPage(props: PageProps<"/models/[slug]">) {
         <div className="page-x container-max mt-12">
           <ViewTransition name={`model-${model.slug}`} share="morph" default="none">
             <div>
-              <Figure media={lead} aspect="aspect-[4/3] md:aspect-[16/9]" sizes="100vw" eager />
+              <Figure media={lead} aspect="aspect-[4/3] md:aspect-[16/9]" className="cut-tr [--cut:3rem] lg:[--cut:6rem]" sizes="100vw" eager />
             </div>
           </ViewTransition>
         </div>

@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, Inter, Inter_Tight } from "next/font/google";
+import { IBM_Plex_Mono, Instrument_Sans, League_Spartan } from "next/font/google";
 import { Analytics } from "@/components/analytics";
 import { LeadDrawer } from "@/components/lead-drawer";
 import { MadeInUsaTag } from "@/components/made-in-usa";
+import { MobileCta } from "@/components/mobile-cta";
 import { MotionRoot } from "@/components/motion-root";
 import { JsonLd, organizationJsonLd } from "@/components/sections";
 import { SiteFooter } from "@/components/site-footer";
@@ -10,10 +11,10 @@ import { SiteHeader } from "@/components/site-header";
 import { site } from "@/content/site";
 import "./globals.css";
 
-// Inter / Inter Tight are variable fonts: one file each covers every weight. Mono uses a single weight.
-// Display and body faces are preloaded; mono labels are small and not render-critical.
-const interTight = Inter_Tight({ subsets: ["latin"], variable: "--font-inter-tight", display: "swap" });
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+// League Spartan matches the geometric logotype (display + brand); Instrument Sans for reading text.
+// Both are variable fonts (one file each). Mono labels use a single weight and are not preloaded.
+const brand = League_Spartan({ subsets: ["latin"], variable: "--font-brand-face", display: "swap" });
+const body = Instrument_Sans({ subsets: ["latin"], variable: "--font-body-face", display: "swap" });
 const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: "400", variable: "--font-plex-mono", display: "swap", preload: false });
 
 export const metadata: Metadata = {
@@ -40,7 +41,7 @@ const motionBootstrap = `try{if(!matchMedia('(prefers-reduced-motion: reduce)').
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-US" className={`${interTight.variable} ${inter.variable} ${plexMono.variable}`} suppressHydrationWarning>
+    <html lang="en-US" className={`${brand.variable} ${body.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: motionBootstrap }} />
       </head>
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />
+        <MobileCta />
         <LeadDrawer tag={<MadeInUsaTag detail />} />
         <MotionRoot />
         <JsonLd data={organizationJsonLd()} />

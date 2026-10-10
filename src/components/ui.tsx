@@ -19,8 +19,8 @@ const buttonBase =
   "group inline-flex min-h-12 items-center justify-center gap-3 rounded-full px-6 text-[0.8125rem] font-medium uppercase tracking-[0.04em] transition-[background-color,color,border-color] duration-300";
 
 const variants = {
-  primary: "bg-carbon text-white hover:bg-carbon-2",
-  secondary: "border border-carbon/25 text-carbon hover:border-carbon",
+  primary: "bg-navy text-white hover:bg-navy-2",
+  secondary: "border border-carbon/25 text-carbon hover:border-navy hover:text-navy",
   inverse: "bg-white text-carbon hover:bg-ivory",
   "ghost-inverse": "border border-white/40 text-white hover:border-white",
 };
@@ -59,10 +59,21 @@ export function Arrow({ className }: { className?: string }) {
   );
 }
 
-/** Drawing-sheet style section code, e.g. "A-05 — The standards". */
+/** Two parallel bars from the logo's diagonal cut — the site's recurring brand accent. */
+export function Slash({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 22 14" aria-hidden="true" className={cx("h-3 w-auto shrink-0", className)}>
+      <polygon points="0,14 14,0 18,0 4,14" fill="#2D366F" />
+      <polygon points="6,14 20,0 22,0 22,2 10,14" fill="#6C7073" />
+    </svg>
+  );
+}
+
+/** Section label: brand slash + drawing-sheet code, e.g. "A-05 — The standards". */
 export function SectionLabel({ code, children, className }: { code: string; children?: ReactNode; className?: string }) {
   return (
     <p className={cx("label flex items-center gap-3", className)}>
+      <Slash />
       <span>{code}</span>
       {children ? (
         <>

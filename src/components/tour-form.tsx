@@ -6,7 +6,8 @@ import { track } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
 import { tourLeadSchema } from "@/lib/lead-schema";
 import { Field, TextField, inputClass } from "./lead-form";
-import { Arrow, cx } from "./ui";
+import { site } from "@/content/site";
+import { Bullet, cx } from "./ui";
 
 const empty = { firstName: "", lastName: "", company: "", email: "", phone: "", preferredDates: "", groupSize: "", message: "" };
 
@@ -17,6 +18,7 @@ export function TourForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sending, setSending] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [mailFallback, setMailFallback] = useState("");
   const startedAt = useRef(0);
   const honeypot = useRef<HTMLInputElement>(null);
 
@@ -51,6 +53,20 @@ export function TourForm() {
     try {
       const res = await fetch("/api/leads/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const json = (await res.json()) as { ok: boolean; error?: string };
+      if (res.status >= 500) {
+        const body = [
+          `Name: ${data.firstName} ${data.lastName}`,
+          `Company: ${data.company}`,
+          `Email: ${data.email}`,
+          `Phone: ${data.phone || "—"}`,
+          `Group size: ${data.groupSize || "—"}`,
+          `Preferred dates: ${data.preferredDates || "—"}`,
+          "",
+          data.message,
+        ].join("\n");
+        setMailFallback(`mailto:${site.contacts.sales.email}?subject=${encodeURIComponent(`Factory tour request — ${data.company}`)}&body=${encodeURIComponent(body)}`);
+        throw new Error("We couldn't submit your request online right now. You can send the same details by email in one click:");
+      }
       if (!res.ok || !json.ok) throw new Error(json.error ?? "Something went wrong.");
       track("tour_request");
       router.push("/thank-you/");
@@ -75,10 +91,19 @@ export function TourForm() {
       <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
         <input ref={honeypot} type="text" name="website" tabIndex={-1} autoComplete="off" />
       </div>
-      {serverError ? <p role="alert" className="border-l-2 border-danger bg-danger/5 p-4 text-sm sm:col-span-2">{serverError}</p> : null}
+      {serverError ? (
+        <div role="alert" className="border-l-2 border-danger bg-danger/5 p-4 text-sm sm:col-span-2">
+          <p>{serverError}</p>
+          {mailFallback ? (
+            <a href={mailFallback} className="mt-3 inline-flex min-h-11 items-center gap-2.5 rounded-full bg-navy px-5 text-[0.75rem] font-medium tracking-[0.06em] text-white uppercase">
+              Email my tour request
+            </a>
+          ) : null}
+        </div>
+      ) : null}
       <div className="sm:col-span-2">
-        <button type="submit" disabled={sending} className="group inline-flex min-h-12 items-center gap-3 bg-carbon px-7 font-medium text-ivory transition-colors hover:bg-bronze-ink disabled:opacity-60">
-          {sending ? "Sending…" : "Request a tour"} <Arrow />
+        <button type="submit" disabled={sending} className="group inline-flex min-h-12 items-center gap-3 rounded-full bg-navy px-7 text-[0.8125rem] font-medium tracking-[0.04em] text-white uppercase transition-colors hover:bg-navy-2 disabled:opacity-60">
+          <Bullet /> {sending ? "Sending…" : "Request a tour"}
         </button>
       </div>
     </form>
