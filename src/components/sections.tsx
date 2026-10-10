@@ -7,6 +7,7 @@ import { media } from "@/content/media";
 import { site } from "@/content/site";
 import { flexSteps, processSteps } from "@/content/solutions";
 import { projectTypes } from "@/lib/lead-schema";
+import { MadeInUsaTag } from "./made-in-usa";
 import { ButtonLink, Figure, SectionLabel, cx } from "./ui";
 
 /** Interior page opener: oversized title + optional lead image. */
@@ -43,7 +44,7 @@ export function PageIntro({
       </div>
       {image ? (
         <div className="page-x container-max mt-14 md:mt-20">
-          <Figure media={image} aspect="aspect-[4/5] sm:aspect-[16/10] lg:aspect-[2.1/1]" className="cut-tr [--cut:3rem] lg:[--cut:6rem]" sizes="100vw" eager />
+          <Figure media={image} aspect="aspect-[4/5] sm:aspect-[16/10] lg:aspect-[2.1/1]" className="cut-tr [--cut:3rem] lg:[--cut:6rem]" sizes="100vw" eager parallax />
         </div>
       ) : (
         <div className="h-16 md:h-24" />
@@ -119,40 +120,49 @@ export function FlexSection({ code = "A-08", withCta = true }: { code?: string; 
 
 /** Final conversion block (docs/redesign/04 A-13). */
 export function CtaBand({ code = "A-13", heading = "Start a project." }: { code?: string; heading?: string }) {
-  const quick = projectTypes.filter((t) => ["housing-community", "classroom", "office-flex", "other"].includes(t.value));
+  const quick = projectTypes.filter((t) => ["housing-community", "townhome-multifamily", "classroom", "office-flex", "flex", "other"].includes(t.value));
   const response = approvedClaim("responseTime");
   return (
-    <section className="border-t border-hairline">
-      <div className="page-x container-max section-y">
-        <SectionLabel code={code} className="text-stone-ink">Next step</SectionLabel>
-        <div className="mt-8 grid gap-12 lg:grid-cols-12">
-          <h2 data-reveal className="text-display-l lg:col-span-7">{heading}</h2>
-          <div data-reveal className="lg:col-span-5">
-            <p className="text-body-l">What are you building?</p>
-            <ul className="mt-6 flex flex-wrap gap-2">
+    <section className="page-x container-max pt-10 pb-24 lg:pb-32">
+      <div className="on-dark cut-tr-bl relative overflow-hidden bg-navy text-white [--cut:2.5rem] lg:[--cut:5rem]">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-[6%] w-[26rem] opacity-[0.07]">
+          <span className="absolute -top-20 left-0 h-[150%] w-20 rotate-45 bg-white" />
+          <span className="absolute -top-20 left-32 h-[150%] w-6 rotate-45 bg-white" />
+        </div>
+        <div className="relative grid gap-12 p-8 md:p-12 lg:grid-cols-12 lg:p-16">
+          <div className="lg:col-span-7">
+            <SectionLabel code={code} className="text-white/70 [&_polygon:first-child]:fill-white">Next step</SectionLabel>
+            <h2 className="mt-6 text-[clamp(2.5rem,5.5vw,5.5rem)] leading-[0.95]">{heading}</h2>
+            <p className="mt-6 max-w-lg text-white/75">
+              Bring us your plans, location, unit count and timeline. We&apos;ll help you decide if modular is the right fit.
+              {response ? ` ${response.statement}.` : ""}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+              <ButtonLink href="/contact/" variant="inverse" className="text-navy" data-cta-location={`cta_${code}`}>Start a project</ButtonLink>
+              <a href={`tel:${site.contacts.sales.tel}`} className="font-display text-xl font-bold tabular-nums underline-offset-4 hover:underline">
+                {site.contacts.sales.phone}
+              </a>
+            </div>
+          </div>
+          <div className="lg:col-span-5">
+            <p className="label text-white/70">What are you building?</p>
+            <ul className="mt-5 grid gap-2 sm:grid-cols-2">
               {quick.map((t) => (
                 <li key={t.value}>
                   <Link
                     href={`/contact/?type=${t.value}`}
-                    className="inline-flex min-h-11 items-center rounded-full border border-carbon/30 px-5 text-sm transition-colors hover:border-carbon hover:bg-carbon hover:text-ivory"
+                    className="group flex min-h-14 items-center justify-between gap-3 border border-white/20 px-4 text-[0.95rem] font-semibold transition-colors hover:border-white hover:bg-white hover:text-navy"
                   >
                     {t.label}
+                    <svg viewBox="0 0 20 20" className="size-4 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden="true">
+                      <path d="M3 10h13M11 4.5 16.5 10 11 15.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                    </svg>
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className="mt-10 border-t border-hairline pt-6 text-sm text-stone-ink">
-              <p>
-                Prefer to talk?{" "}
-                <a href={`tel:${site.contacts.sales.tel}`} className="font-medium text-carbon underline-offset-4 hover:underline">
-                  {site.contacts.sales.phone}
-                </a>{" "}
-                ·{" "}
-                <a href={`mailto:${site.contacts.sales.email}`} className="font-medium text-carbon underline-offset-4 hover:underline">
-                  {site.contacts.sales.email}
-                </a>
-              </p>
-              {response ? <p className="mt-2">{response.statement}.</p> : null}
+            <div className="mt-6">
+              <MadeInUsaTag tone="dark" detail />
             </div>
           </div>
         </div>

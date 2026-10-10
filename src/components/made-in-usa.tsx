@@ -69,7 +69,9 @@ export function MadeInUsaSeal({ className, tone = "light" }: { className?: strin
       role="img"
       aria-label="Made in USA. Manufactured in Salt Lake City, Utah."
       className={cx(
-        "relative grid size-32 place-items-center rounded-full",
+        // Caller-supplied absolute/fixed positioning must win over the default.
+        /(absolute|fixed)/.test(className ?? "") ? "" : "relative",
+        "grid size-32 place-items-center rounded-full",
         dark ? "bg-navy text-white" : "bg-white text-navy shadow-[0_10px_40px_rgb(23_26_25/0.18)]",
         className,
       )}

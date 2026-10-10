@@ -94,6 +94,8 @@ type FigureProps = {
   /** Tailwind aspect class; omit to fill the parent (parent must be positioned with a height). */
   aspect?: string;
   imgClassName?: string;
+  /** Scroll-scrubbed parallax (GSAP layer). */
+  parallax?: boolean;
 };
 
 /** Image with an honest provenance tag (renders/drawings are labelled). */
@@ -104,10 +106,10 @@ const provenanceTag: Record<Media["provenance"], string | null> = {
   unconfirmed: "Concept image",
 };
 
-export function Figure({ media, className, sizes, eager, aspect, imgClassName }: FigureProps) {
+export function Figure({ media, className, sizes, eager, aspect, imgClassName, parallax }: FigureProps) {
   const tag = provenanceTag[media.provenance];
   return (
-    <div className={cx("relative overflow-hidden bg-carbon/5", aspect, !aspect && "h-full w-full", className)}>
+    <div data-parallax={parallax || undefined} className={cx("relative overflow-hidden bg-carbon/5", aspect, !aspect && "h-full w-full", className)}>
       <Image
         src={media.src}
         alt={media.alt}

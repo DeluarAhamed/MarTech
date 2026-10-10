@@ -45,8 +45,17 @@ export const claims = {
     source: "About page. No evidence on file.",
     status: "pending",
   },
+  scaleHomes: {
+    statement: "From 1 to 100+ single-family or multi-family homes",
+    value: "1–100+",
+    label: "Single-family or multi-family homes",
+    source: "Legacy homepage counter. Capacity claim: needs production capacity evidence.",
+    status: "pending",
+  },
   marginIncrease: {
     statement: "30%+ increase in margins",
+    value: "30%+",
+    label: "Increase in margins",
     source: "Homepage. No evidence on file. Recommend removal unless documented.",
     status: "pending",
   },

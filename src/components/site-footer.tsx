@@ -4,7 +4,6 @@ import { models } from "@/content/models";
 import { site } from "@/content/site";
 import { solutionHref, solutions } from "@/content/solutions";
 import { MadeInUsaTag } from "./made-in-usa";
-import { ButtonLink } from "./ui";
 import { LogoStacked } from "./wordmark";
 
 export function SiteFooter() {
@@ -15,21 +14,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-hairline bg-white text-carbon">
       <div className="page-x container-max">
-        {/* Contact statement */}
-        <div className="grid-4 gap-y-8 py-20 lg:py-28">
-          <p className="label text-stone-ink">Start a project</p>
-          <div className="md:col-span-2 lg:col-span-3">
-            <p className="font-display text-[clamp(1.75rem,3.6vw,3.25rem)] leading-[1.05] font-bold tracking-[-0.025em] [font-stretch:110%]">
-              Let&apos;s talk about your next development. <span className="text-navy">Your plans, your site, your schedule.</span>
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/contact/" data-cta-location="footer">Start a project</ButtonLink>
-              <ButtonLink href="/factory-tour/" variant="secondary">Factory tour</ButtonLink>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid gap-12 border-t border-hairline py-14 text-sm md:grid-cols-2 lg:grid-cols-12">
+        <div className="grid gap-12 py-14 text-sm md:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-3">
             <LogoStacked className="w-48" />
             <p className="mt-6 max-w-xs text-stone-ink">{site.coverage.short}</p>
@@ -55,7 +40,7 @@ export function SiteFooter() {
             <FooterLink href="/about/">About</FooterLink>
             <FooterLink href="/process/">Process</FooterLink>
             <FooterLink href="/locations/">Service area</FooterLink>
-            <FooterLink href="/insights/">Insights</FooterLink>
+            <FooterLink href="/blog/">Blog</FooterLink>
             <FooterLink href="/factory-tour/">Factory tour</FooterLink>
             <FooterLink href="/contact/">Contact us</FooterLink>
           </FooterList>

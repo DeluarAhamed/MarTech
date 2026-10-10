@@ -229,3 +229,16 @@ html.motion-ready .us-map.in-view .map-dest { transform-box: fill-box; transform
 html.motion-ready .parallel-schedule .ps-bar { transform: scaleX(0); transform-origin: left center; transition: transform 0.9s var(--ease-out-expo); }
 html.motion-ready .parallel-schedule.is-in .ps-bar { transform: scaleX(1); }
 @media (max-width: 63.99rem) { html.motion-ready .parallel-schedule .ps-bar { transform: none; } }
+
+/* Hero text entrance: transform only, never hidden (content is visible even if animation never runs) */
+@keyframes rise-in { from { transform: translateY(28px); } to { transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-rise { animation: rise-in 1s var(--ease-out-expo) 0.25s both; }
+  .hero-rise-late { animation: rise-in 1s var(--ease-out-expo) 0.4s both; }
+}
+
+/* Marquee */
+.marquee-track { animation: marquee 38s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }

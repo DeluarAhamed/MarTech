@@ -61,7 +61,7 @@ export default function ProcessPage() {
           </div>
         </div>
         <div className="relative mt-12">
-          <Figure media={media.solterraPerspective} aspect="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[2.6/1]" className="cut-tr [--cut:3rem] lg:[--cut:6rem]" sizes="100vw" eager />
+          <Figure media={media.solterraPerspective} aspect="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[2.6/1]" className="cut-tr [--cut:3rem] lg:[--cut:6rem]" sizes="100vw" eager parallax />
           <div className="absolute top-4 left-4"><MadeInUsaTag tone="dark" detail /></div>
         </div>
       </section>
@@ -147,7 +147,7 @@ export default function ProcessPage() {
 
       {/* Comparison */}
       <section className="page-x container-max section-y">
-        <SectionHead code="P-05" label="Modular vs. site-built" title="A different way to build." action={<ButtonLink href="/insights/modular-vs-site-built-construction/" variant="secondary">Read the comparison</ButtonLink>} />
+        <SectionHead code="P-05" label="Modular vs. site-built" title="A different way to build." action={<ButtonLink href="/blog/modular-vs-site-built-construction/" variant="secondary">Read the comparison</ButtonLink>} />
         <div className="mt-12 grid gap-4 md:grid-cols-2">
           <div className="cut-tr bg-navy p-7 text-white [--cut:2rem] md:p-9">
             <p className="label text-white/70">Modular with MAR Technology</p>

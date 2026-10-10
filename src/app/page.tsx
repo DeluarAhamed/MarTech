@@ -3,14 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { ViewTransition } from "react";
 import { GalleryRing } from "@/components/gallery-ring";
+import { CounterBand } from "@/components/counter-band";
 import { HeroMedia } from "@/components/hero-media";
+import { Marquee } from "@/components/marquee";
+import { PlayFilm } from "@/components/play-film";
 import { Faq, PathPanel } from "@/components/home-sections";
+import { CtaBand } from "@/components/sections";
 import { MadeInUsaSeal, MadeInUsaTag } from "@/components/made-in-usa";
 import { Bullet, ButtonLink, Figure, SectionLabel, cx } from "@/components/ui";
 import { NumberedCards, SectionHead } from "@/components/blocks";
-import { approvedClaim, type ClaimKey } from "@/content/claims";
 import { capabilities, hero, heroCopy } from "@/content/home";
 import { media, type Media } from "@/content/media";
+import { posts } from "@/content/insights";
 import { getModel } from "@/content/models";
 import { site } from "@/content/site";
 import { processSteps } from "@/content/solutions";
@@ -22,12 +26,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const PROOF_CLAIMS: ClaimKey[] = ["deliveryWindow", "factoryInspections", "productionScaling"];
-
 type Showcase = { href: string; image: Media; name: string; code: string; meta: string; morph?: string; cta?: string };
 
 export default function HomePage() {
-  const proof = PROOF_CLAIMS.map(approvedClaim).filter((c) => c !== null);
+  const latest = [...posts].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
   const solterra = getModel("solterra")!;
   const castello = getModel("castello")!;
   const bohemian = getModel("bohemian")!;
@@ -49,44 +51,50 @@ export default function HomePage() {
 
   return (
     <>
-      {/* 01 — Brand wordmark (logo lockup at display scale) + cinematic media with the value proposition */}
-      <section className="page-x container-max pt-20 md:pt-24">
+      {/* 01 Hero: height-aware so wordmark, headline and CTAs always fit the first viewport on desktop */}
+      <section className="page-x container-max flex flex-col pt-20 md:pt-24 lg:h-[100svh] lg:max-h-[75rem] lg:min-h-[42rem] lg:pb-5">
         <p
           aria-hidden="true"
-          className="hero-line overflow-hidden font-brand leading-[0.82] font-bold text-navy whitespace-nowrap [container-type:inline-size]"
+          className="hero-line shrink-0 overflow-hidden font-brand leading-[0.84] font-extrabold text-navy whitespace-nowrap [container-type:inline-size] [font-stretch:112%]"
         >
-          <span className="block text-[11.65cqw] tracking-[-0.01em] uppercase">MAR Technology</span>
+          <span className="block text-[min(9.1cqw,18svh)] tracking-[-0.025em] uppercase">MAR Technology</span>
         </p>
-        <div aria-hidden="true" className="hero-fade mt-3 flex items-center gap-4 text-brand-grey md:mt-4">
+        <div aria-hidden="true" className="hero-rise mt-2 flex shrink-0 items-center gap-4 text-brand-grey md:mt-3">
           <span className="h-[3px] flex-1 bg-navy" />
-          <span className="font-brand text-[clamp(0.85rem,2.2vw,2rem)] font-semibold tracking-[0.18em] uppercase">Building Systems</span>
+          <span className="font-brand text-[clamp(0.8rem,min(1.7vw,2.6svh),1.75rem)] font-bold tracking-[0.22em] uppercase">Building Systems</span>
           <span className="h-[3px] flex-1 bg-navy" />
         </div>
 
-        <div className="relative mt-5 lg:mt-7">
-          <div className="cut-tr relative aspect-[4/3] overflow-hidden bg-carbon [--cut:2.25rem] sm:aspect-[16/10] sm:[--cut:3rem] lg:aspect-auto lg:h-[max(32rem,calc(100svh-19rem))] lg:[--cut:7rem]">
+        <div className="relative mt-4 lg:mt-5 lg:min-h-0 lg:flex-1">
+          <div className="cut-tr relative aspect-[4/3] overflow-hidden bg-carbon [--cut:2.25rem] sm:aspect-[16/10] sm:[--cut:3rem] lg:aspect-auto lg:h-full lg:[--cut:6rem]">
             <HeroMedia image={hero.image} video={hero.video} />
-            <div aria-hidden="true" className="absolute inset-0 hidden bg-gradient-to-tr from-carbon/90 via-carbon/35 to-transparent lg:block" />
+            <div aria-hidden="true" className="absolute inset-0 hidden bg-gradient-to-tr from-carbon/90 via-carbon/40 to-transparent lg:block" />
             <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2 lg:top-5 lg:left-5">
               <MadeInUsaTag tone="dark" detail />
               {hero.video?.provenance !== "footage" ? (
                 <span className="label bg-carbon/50 px-2 py-1.5 text-[0.625rem] leading-none text-white/85">Rendering</span>
               ) : null}
             </div>
+            {hero.film ? (
+              <div className="absolute inset-0 hidden items-center justify-center lg:flex">
+                <PlayFilm film={hero.film} />
+              </div>
+            ) : null}
           </div>
 
-          <MadeInUsaSeal className="absolute -top-10 right-10 z-10 hidden xl:grid" />
+          <MadeInUsaSeal className="absolute -top-9 right-9 z-10 hidden size-28 xl:grid" />
 
           {/* Value proposition: overlaid on desktop, below the image on small screens */}
-          <div className="mt-6 lg:absolute lg:bottom-0 lg:left-0 lg:mt-0 lg:max-w-[46rem] lg:p-10 lg:text-white">
-            <h1 className="hero-fade font-display text-[clamp(2rem,4.2vw,4rem)] leading-[0.95] font-bold tracking-[-0.025em]">
+          <div className="mt-6 lg:absolute lg:bottom-0 lg:left-0 lg:mt-0 lg:max-w-[50rem] lg:p-8 lg:text-white xl:p-10">
+            <p className="hero-rise label mb-4 hidden text-white/75 lg:block">U.S. modular manufacturer · Salt Lake City, Utah</p>
+            <h1 className="hero-rise text-[clamp(2.1rem,min(4.2vw,7svh),4.5rem)] leading-[0.95] font-extrabold tracking-[-0.03em]">
               Modular buildings, engineered for developers.
             </h1>
-            <p className="hero-fade-late mt-4 max-w-xl text-[1.05rem] text-stone-ink lg:text-white/80">
-              Homes, townhomes, classrooms and flex space, manufactured in our Salt Lake City facility while your site
-              is prepared. Serving developers nationwide.
+            <p className="hero-rise-late mt-4 max-w-xl text-[1.05rem] text-stone-ink lg:text-white/85">
+              Homes, townhomes, classrooms and flex space, manufactured in our Utah factory while your site is prepared.
+              Serving all 50 states.
             </p>
-            <div className="hero-fade-late mt-7 flex flex-wrap gap-3">
+            <div className="hero-rise-late mt-6 flex flex-wrap gap-3">
               <ButtonLink href="/contact/" data-cta-location="hero" className="lg:bg-white lg:text-navy lg:hover:bg-ivory">
                 Start a project
               </ButtonLink>
@@ -96,22 +104,12 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
-        {/* At a glance — product facts only (no unverified statistics) */}
-        <dl className="grid-4 mt-12 gap-y-6 border-y border-hairline py-6 lg:mt-16">
-          {[
-            ["Standard models", "3 + your plans"],
-            ["Footprints", "12′ × 40′ to 36′ × 48′"],
-            ["Structure", "Steel-framed modules"],
-            ["Enquiries", "All 50 states welcome"],
-          ].map(([k, v]) => (
-            <div key={k} className="flex items-baseline justify-between gap-4 md:block">
-              <dt className="label text-stone-ink">{k}</dt>
-              <dd className="font-display text-lg font-semibold md:mt-2 md:text-2xl">{v}</dd>
-            </div>
-          ))}
-        </dl>
       </section>
+
+      {/* 01b Capabilities marquee */}
+      <Marquee
+        items={["Single-family", "Townhomes", "Multifamily", "Build-to-rent", "Classrooms", "Workforce housing", "Offices and flex space", "ADUs", "PMRVs", "Made in USA"]}
+      />
 
       {/* 02 — Statement */}
       <section className="page-x container-max pt-20 pb-24 md:pt-28 lg:pb-40">
@@ -132,17 +130,11 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        {proof.length >= 2 ? (
-          <dl className="grid-4 mt-24 border-t border-hairline pt-8">
-            {proof.map((c) => (
-              <div key={c.statement} className="lg:col-start-auto">
-                <dt className="label text-stone-ink">{c.label}</dt>
-                <dd className="mt-3 font-display text-display-m tabular-nums">{c.value}</dd>
-              </div>
-            ))}
-          </dl>
-        ) : null}
       </section>
+
+      {/* 02b Counters */}
+      <CounterBand />
+      <div className="h-24 lg:h-36" />
 
       {/* 03 — Models, staggered */}
       <section aria-labelledby="home-models" className="page-x container-max">
@@ -198,7 +190,7 @@ export default function HomePage() {
               <ButtonLink href="/solutions/">All solutions</ButtonLink>
             </div>
             <div data-reveal className="cut-bl relative mt-10 aspect-[4/3] overflow-hidden [--cut:2.5rem]">
-              <Figure media={media.housing} sizes="(min-width:1024px) 42vw, 100vw" />
+              <Figure media={media.housing} sizes="(min-width:1024px) 42vw, 100vw" parallax />
             </div>
           </div>
           <div className="md:col-span-2 lg:col-start-3">
@@ -244,7 +236,7 @@ export default function HomePage() {
             </div>
           </div>
           <div data-reveal className="cut-bl relative aspect-[3/4] [--cut:4rem] lg:col-span-2 lg:col-start-3 lg:ml-[25%] lg:aspect-[3/5]">
-            <Figure media={media.moduleCommunity} sizes="(min-width:1024px) 38vw, 100vw" />
+            <Figure media={media.moduleCommunity} sizes="(min-width:1024px) 38vw, 100vw" parallax />
           </div>
         </div>
       </section>
@@ -252,15 +244,40 @@ export default function HomePage() {
       {/* 08b — FAQ */}
       <Faq />
 
+      {/* 08c Latest from the blog */}
+      <section className="page-x container-max pb-28 lg:pb-40">
+        <SectionHead
+          code="A-10"
+          label="From the blog"
+          title="Guides for developers."
+          action={<ButtonLink href="/blog/" variant="secondary">All articles</ButtonLink>}
+        />
+        <ul data-reveal data-reveal-group className="mt-12 grid gap-6 md:grid-cols-3">
+          {latest.map((p) => (
+            <li key={p.slug}>
+              <Link href={`/blog/${p.slug}/`} className="group block h-full border border-hairline bg-white transition-[border-color,box-shadow] duration-300 hover:border-navy hover:shadow-[0_24px_48px_-28px_rgb(45_54_111/0.45)]">
+                <div className="cut-tr relative aspect-[16/10] overflow-hidden [--cut:1.75rem]">
+                  <Image src={p.image.src} alt={p.image.alt} fill sizes="(min-width:768px) 31vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                </div>
+                <div className="p-6">
+                  <p className="label text-navy">{p.topic} · {p.minutes} min read</p>
+                  <h3 className="mt-3 text-xl leading-snug group-hover:text-navy">{p.title}</h3>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       {/* 09 — Featured, full bleed */}
       <section aria-label="Featured model">
-        <Link href="/models/castello/" className="group relative block h-[80svh] min-h-[28rem] overflow-hidden lg:h-[110vh]">
+        <Link href="/models/castello/" data-parallax className="group relative block h-[80svh] min-h-[28rem] overflow-hidden lg:h-[110vh]">
           <Image
             src={media.castelloThreeQuarter.src}
             alt={media.castelloThreeQuarter.alt}
             fill
             sizes="100vw"
-            className="object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-[1.03]"
+            className="object-cover"
           />
           <div className="absolute right-5 bottom-5 left-5 grid grid-cols-[auto_1fr_auto] items-start gap-x-6 bg-carbon/45 p-4 text-sm text-white backdrop-blur-md md:left-auto md:w-[min(46rem,60vw)]">
             <span className="inline-flex items-center gap-2 font-medium uppercase"><Bullet /> View</span>
@@ -272,6 +289,7 @@ export default function HomePage() {
           </div>
         </Link>
       </section>
+      <CtaBand code="A-12" />
     </>
   );
 }

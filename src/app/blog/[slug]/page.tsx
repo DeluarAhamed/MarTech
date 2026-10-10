@@ -14,14 +14,14 @@ export function generateStaticParams() {
 
 export const dynamicParams = false;
 
-export async function generateMetadata(props: PageProps<"/insights/[slug]">): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<"/blog/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const p = getPost(slug);
   if (!p) return {};
   return {
     title: p.title,
     description: p.description,
-    alternates: { canonical: `/insights/${p.slug}/` },
+    alternates: { canonical: `/blog/${p.slug}/` },
     openGraph: { type: "article", publishedTime: p.date, images: [{ url: p.image.src, alt: p.image.alt }] },
   };
 }
@@ -79,7 +79,7 @@ function Body({ blocks }: { blocks: Block[] }) {
   );
 }
 
-export default async function ArticlePage(props: PageProps<"/insights/[slug]">) {
+export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
   const { slug } = await props.params;
   const post = getPost(slug);
   if (!post) notFound();
@@ -92,8 +92,8 @@ export default async function ArticlePage(props: PageProps<"/insights/[slug]">) 
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
-          { name: "Insights", path: "/insights/" },
-          { name: post.title, path: `/insights/${post.slug}/` },
+          { name: "Blog", path: "/blog/" },
+          { name: post.title, path: `/blog/${post.slug}/` },
         ])}
       />
       <JsonLd
@@ -107,7 +107,7 @@ export default async function ArticlePage(props: PageProps<"/insights/[slug]">) 
           dateModified: post.date,
           author: { "@type": "Organization", name: site.name, url: site.url },
           publisher: { "@type": "Organization", name: site.legalName, logo: { "@type": "ImageObject", url: `${site.url}/brand/mar-technology-logo.png` } },
-          mainEntityOfPage: `${site.url}/insights/${post.slug}/`,
+          mainEntityOfPage: `${site.url}/blog/${post.slug}/`,
           keywords: post.keyword,
         }}
       />
@@ -115,7 +115,7 @@ export default async function ArticlePage(props: PageProps<"/insights/[slug]">) 
       <article>
         <header className="page-x container-max pt-28 md:pt-36">
           <nav aria-label="Breadcrumb" className="label text-stone-ink">
-            <Link href="/insights/" className="hover:text-navy">Insights</Link>
+            <Link href="/blog/" className="hover:text-navy">Blog</Link>
             <span aria-hidden="true"> / </span>
             <span>{post.topic}</span>
           </nav>
@@ -167,7 +167,7 @@ export default async function ArticlePage(props: PageProps<"/insights/[slug]">) 
           <ul className="mt-10 grid gap-6 md:grid-cols-3">
             {related.map((p) => (
               <li key={p.slug}>
-                <Link href={`/insights/${p.slug}/`} className="group block h-full bg-white">
+                <Link href={`/blog/${p.slug}/`} className="group block h-full bg-white">
                   <div className="cut-tr relative aspect-[16/10] overflow-hidden [--cut:1.5rem]">
                     <Image src={p.image.src} alt={p.image.alt} fill sizes="(min-width:768px) 31vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
                   </div>

@@ -82,7 +82,7 @@ export default function DevelopersPage() {
           </div>
         </div>
         <div className="relative mt-12 md:mt-16">
-          <Figure media={media.townhomeCommunity} aspect="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[2.4/1]" className="cut-tr [--cut:3rem] lg:[--cut:6rem]" sizes="100vw" eager />
+          <Figure media={media.townhomeCommunity} aspect="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[2.4/1]" className="cut-tr [--cut:3rem] lg:[--cut:6rem]" sizes="100vw" eager parallax />
           <div className="absolute top-4 left-4"><MadeInUsaTag tone="dark" detail /></div>
           <MadeInUsaSeal className="absolute -bottom-12 right-6 hidden lg:grid" />
         </div>

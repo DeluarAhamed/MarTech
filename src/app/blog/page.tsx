@@ -7,34 +7,34 @@ import { posts } from "@/content/insights";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: "Insights | Modular Construction Guides for Developers",
+  title: "Blog | Modular Construction Guides for Developers",
   description:
     "Guides on modular construction for developers: modular vs site-built, build-to-rent communities, modular classrooms, ADUs and why factory location matters in the Western U.S.",
-  alternates: { canonical: "/insights/" },
+  alternates: { canonical: "/blog/" },
 };
 
 const fmt = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
-export default function InsightsPage() {
+export default function BlogPage() {
   const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
   const [featured, ...rest] = sorted;
   const topics = Array.from(new Set(rest.map((p) => p.topic)));
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Insights", path: "/insights/" }])} />
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog/" }])} />
       <JsonLd
         data={{
           "@context": "https://schema.org",
           "@type": "Blog",
-          name: `${site.name} Insights`,
-          url: `${site.url}/insights/`,
-          blogPost: sorted.map((p) => ({ "@type": "BlogPosting", headline: p.title, url: `${site.url}/insights/${p.slug}/`, datePublished: p.date })),
+          name: `${site.name} Blog`,
+          url: `${site.url}/blog/`,
+          blogPost: sorted.map((p) => ({ "@type": "BlogPosting", headline: p.title, url: `${site.url}/blog/${p.slug}/`, datePublished: p.date })),
         }}
       />
 
       <section className="page-x container-max pt-28 md:pt-36">
-        <SectionLabel code="I-00" className="text-stone-ink">Insights</SectionLabel>
+        <SectionLabel code="I-00" className="text-stone-ink">Blog</SectionLabel>
         <div className="grid-4 mt-6 items-end gap-y-6">
           <h1 className="hero-line overflow-hidden pb-[0.06em] text-display-l md:col-span-2 lg:col-span-3">
             <span className="block">Guides for building <span className="text-navy">modular, at scale.</span></span>
@@ -54,7 +54,7 @@ export default function InsightsPage() {
 
       {/* Featured */}
       <section className="page-x container-max pt-12 pb-20">
-        <Link href={`/insights/${featured.slug}/`} className="group grid gap-8 lg:grid-cols-12 lg:items-center">
+        <Link href={`/blog/${featured.slug}/`} className="group grid gap-8 lg:grid-cols-12 lg:items-center">
           <div className="cut-tr relative aspect-[16/10] overflow-hidden bg-carbon/5 [--cut:3rem] lg:col-span-7">
             <Image src={featured.image.src} alt={featured.image.alt} fill loading="eager" fetchPriority="high" sizes="(min-width:1024px) 58vw, 100vw" className="object-cover transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.03]" />
             <span className="label absolute bottom-3 left-3 bg-carbon/60 px-2 py-1 text-[0.6rem] text-white">Rendering</span>
@@ -90,7 +90,7 @@ export default function InsightsPage() {
                 <ul className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {list.map((p) => (
                     <li key={p.slug}>
-                      <Link href={`/insights/${p.slug}/`} className="group flex h-full flex-col bg-white transition-shadow duration-300 hover:shadow-[0_24px_48px_-28px_rgb(45_54_111/0.45)]">
+                      <Link href={`/blog/${p.slug}/`} className="group flex h-full flex-col bg-white transition-shadow duration-300 hover:shadow-[0_24px_48px_-28px_rgb(45_54_111/0.45)]">
                         <div className="cut-tr relative aspect-[16/10] overflow-hidden [--cut:1.75rem]">
                           <Image src={p.image.src} alt={p.image.alt} fill sizes="(min-width:1024px) 31vw, (min-width:768px) 48vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
                         </div>

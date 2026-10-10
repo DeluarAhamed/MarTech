@@ -27,6 +27,10 @@ const locationFaqs = [
     a: "Yes, enquiries from every state are welcome. Projects outside the Western states are assessed individually based on feasibility and delivery availability, and qualifying larger developments may be served through FLEX™ localized manufacturing.",
   },
   {
+    q: "Do you serve Alaska and Hawaii?",
+    a: "Yes, enquiries are welcome. Because freight to Alaska and Hawaii moves by sea, those projects are assessed individually rather than served as part of the contiguous Western region.",
+  },
+  {
     q: "Can we visit the factory?",
     a: "Yes. Tours of our Salt Lake City manufacturing hub can be requested online and we'll confirm a time with you.",
   },
@@ -152,7 +156,7 @@ export default function LocationsPage() {
           code="L-03"
           label="Why factory location matters"
           title="Shorter routes, simpler deliveries."
-          action={<ButtonLink href="/insights/modular-factory-location-western-states-freight/" variant="secondary">Read the guide</ButtonLink>}
+          action={<ButtonLink href="/blog/modular-factory-location-western-states-freight/" variant="secondary">Read the guide</ButtonLink>}
         />
         <div className="mt-12">
           <NumberedCards

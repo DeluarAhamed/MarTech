@@ -7,7 +7,7 @@ export const site = {
   /** Approved coverage positioning (client decision 2026-10-09). Never promise delivery to a specific state. */
   coverage: {
     short: "Serving all 50 states. Western states are delivered from our Salt Lake City factory.",
-    long: "MAR Technology is a U.S. modular manufacturer serving developers in all 50 states. For freight efficiency, our Salt Lake City, Utah factory serves the Western states. Projects elsewhere are assessed individually, and qualifying larger developments can be served through FLEX™ localized manufacturing.",
+    long: "MAR Technology is a U.S. modular manufacturer serving developers in all 50 states. For freight efficiency, our Salt Lake City, Utah factory serves the contiguous Western states. Projects elsewhere, including Alaska and Hawaii, are assessed individually, and qualifying larger developments can be served through FLEX™ localized manufacturing.",
     formNote: "We welcome enquiries from all 50 states. Manufacturing and delivery are confirmed per project, based on feasibility and availability.",
   },
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.martechbuildingsystems.com",
@@ -106,7 +106,7 @@ export const mainNav: NavItem[] = [
     feature: { href: "/models/", title: "Explore the catalog", text: "Three engineered standards, ready to configure.", image: `${WP}/2026/08/MT-Single-Familly-EXT-Perspective_V6-scaled.png` },
   },
   { kind: "link", href: "/locations/", label: "Locations" },
-  { kind: "link", href: "/insights/", label: "Insights" },
+  { kind: "link", href: "/blog/", label: "Blog" },
   {
     kind: "menu",
     id: "company",
@@ -126,7 +126,7 @@ export const mainNav: NavItem[] = [
         links: [
           { href: "/contact/", label: "Contact us", description: "Sales and general enquiries" },
           { href: "/factory-tour/", label: "Book a factory tour", description: "Salt Lake City, Utah" },
-          { href: "/insights/", label: "Insights", description: "Guides for developers" },
+          { href: "/blog/", label: "Blog", description: "Guides for developers" },
         ],
       },
     ],
@@ -139,6 +139,6 @@ export const primaryNav = [
   { href: "/models/", label: "Models" },
   { href: "/process/", label: "Process" },
   { href: "/locations/", label: "Locations" },
-  { href: "/insights/", label: "Insights" },
+  { href: "/blog/", label: "Blog" },
   { href: "/about/", label: "About" },
 ] as const;

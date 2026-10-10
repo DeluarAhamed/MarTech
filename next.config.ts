@@ -11,6 +11,8 @@ const legacyRedirects = [
   ["/townhome/", "/models/castello/"],
   ["/sitemap_index.xml", "/sitemap.xml"],
   ["/page-sitemap.xml", "/sitemap.xml"],
+  ["/insights/", "/blog/"],
+  ["/insights/:slug/", "/blog/:slug/"],
 ] as const;
 
 const nextConfig: NextConfig = {
