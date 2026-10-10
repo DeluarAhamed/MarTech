@@ -6,7 +6,7 @@ import { Arrow, SectionLabel } from "@/components/ui";
 import { applicationLabels, models } from "@/content/models";
 
 export const metadata: Metadata = {
-  title: "Modular Building Models — Single Module, Single-Family & Townhome",
+  title: "Modular Building Models | Single Module, Single-Family and Townhome",
   description:
     "Explore MAR Technology's standard modular models: Bohemian single module (480–576 sqft), Solterra single-family (1,440–1,474 sqft) and Castello townhome (1,368 sqft).",
   alternates: { canonical: "/models/" },
@@ -19,7 +19,7 @@ export default function ModelsPage() {
     ...["Size", "Footprint", "Modules", "Layout"].map((label) => ({
       label,
       get: (m: (typeof models)[number]) =>
-        m.specs.find((s) => s.label === label || (label === "Size" && s.label === "Livable area"))?.value ?? "—",
+        m.specs.find((s) => s.label === label || (label === "Size" && s.label === "Livable area"))?.value ?? "n/a",
     })),
     { label: "Applications", get: (m) => m.applications.map((a) => applicationLabels[a]).join(", ") },
   ];
@@ -31,7 +31,7 @@ export default function ModelsPage() {
         code="M-00"
         eyebrow="Model catalog"
         title="The standards."
-        intro="Three engineered starting points — configured, finished and scaled to your project. Or bring your own plans and we'll manufacture to them."
+        intro="Three engineered starting points, configured, finished and scaled to your project. Or bring your own plans and we'll manufacture to them."
       />
 
       <section>

@@ -12,7 +12,7 @@ const LeadForm = dynamic(() => import("./lead-form").then((m) => m.LeadForm), {
   loading: () => <div className="h-96 animate-pulse bg-carbon/5" aria-hidden="true" />,
 });
 
-type Preset = { type?: string; model?: string };
+type Preset = { type?: string; model?: string; state?: string };
 
 /**
  * Right-side "Start a project" drawer. Any link to /contact/ is progressively enhanced:
@@ -56,7 +56,7 @@ export function LeadDrawer({ tag }: { tag: ReactNode }) {
       if (window.location.pathname.startsWith("/contact")) return; // the full form is already on screen
       e.preventDefault();
       open(
-        { type: url.searchParams.get("type") ?? undefined, model: url.searchParams.get("model") ?? undefined },
+        { type: url.searchParams.get("type") ?? undefined, model: url.searchParams.get("model") ?? undefined, state: url.searchParams.get("state") ?? undefined },
         anchor.dataset.ctaLocation ?? window.location.pathname,
       );
     };
@@ -114,7 +114,7 @@ export function LeadDrawer({ tag }: { tag: ReactNode }) {
         </header>
 
         <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-8 sm:px-10">
-          {preset ? <LeadForm key={instance} variant="drawer" initialType={preset.type} initialModel={preset.model} /> : null}
+          {preset ? <LeadForm key={instance} variant="drawer" initialType={preset.type} initialModel={preset.model} initialState={preset.state} /> : null}
         </div>
 
         <footer className="border-t border-hairline px-6 py-4 text-sm text-stone-ink sm:px-10">

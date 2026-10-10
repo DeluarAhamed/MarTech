@@ -21,10 +21,10 @@
   --color-hairline-inverse: rgb(245 243 238 / 0.18);
   --color-danger: #a23b2a;
 
-  --font-display: var(--font-brand-face), ui-sans-serif, system-ui, sans-serif;
-  --font-brand: var(--font-brand-face), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-body-face), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-brand: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 
   /* Interior page titles */
   --text-display-xl: clamp(3.5rem, 10.5vw, 11rem);
@@ -65,17 +65,18 @@
     background-color: #ffffff;
     color: var(--color-carbon);
     font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1.0625rem;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-weight: 750;
+    font-stretch: 112%;
+    letter-spacing: -0.025em;
     text-wrap: balance;
   }
-  h3 { font-weight: 600; letter-spacing: -0.01em; }
+  h3, h4 { font-weight: 650; font-stretch: 106%; letter-spacing: -0.012em; }
   p { text-wrap: pretty; }
   ::selection { background: var(--color-bronze); color: var(--color-carbon); }
   :focus-visible {
@@ -97,16 +98,19 @@
   .section-y { padding-block: clamp(5rem, 11vw, 12.5rem); }
 
   .label {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: var(--text-label);
+    font-weight: 650;
+    font-stretch: 110%;
     line-height: var(--text-label--line-height);
-    letter-spacing: var(--text-label--letter-spacing);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
   .statement {
     font-family: var(--font-display);
-    font-weight: 300;
+    font-weight: 400;
+    font-stretch: 100%;
     font-size: var(--text-statement);
     line-height: var(--text-statement--line-height);
     letter-spacing: var(--text-statement--letter-spacing);
@@ -201,3 +205,27 @@ html.motion-ready:not(.reveal-on) [data-reveal-group] > * { animation: reveal-fa
   ::view-transition-new(*),
   ::view-transition-group(*) { animation-duration: 0s !important; animation-delay: 0s !important; }
 }
+
+/* Coverage map (components/coverage-map.tsx) */
+.us-map .map-link { cursor: pointer; }
+.us-map [data-tier="west"].is-active .map-state { filter: brightness(1.45) saturate(1.1); }
+.us-map [data-tier="national"].is-active .map-state { filter: brightness(0.9); }
+.us-map .map-link:focus-visible .map-state { stroke: var(--color-bronze); stroke-width: 2.5; }
+.us-map .map-route { stroke-dasharray: 1 0; stroke-linecap: round; }
+.us-map .map-pulse { transform-box: fill-box; transform-origin: center; animation: map-pulse 2.4s ease-out infinite; }
+html.motion-ready .us-map:not(.in-view) .map-route { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+html.motion-ready .us-map:not(.in-view) .map-dest { opacity: 0; }
+html.motion-ready .us-map.in-view .map-route { stroke-dasharray: 1 1; animation: map-draw 1.2s var(--ease-out-expo) both; }
+html.motion-ready .us-map.in-view .map-dest { transform-box: fill-box; transform-origin: center; animation: map-pop 0.5s var(--ease-out-expo) both; }
+@keyframes map-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes map-pop { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: scale(1); } }
+@keyframes map-pulse { from { opacity: 0.9; transform: scale(1); } to { opacity: 0; transform: scale(3.4); } }
+@media (prefers-reduced-motion: reduce) {
+  .us-map .map-pulse { animation: none; opacity: 0; }
+}
+.us-map .map-state.is-highlight { fill: var(--color-bronze); }
+
+/* Parallel schedule bars grow in sequence once revealed */
+html.motion-ready .parallel-schedule .ps-bar { transform: scaleX(0); transform-origin: left center; transition: transform 0.9s var(--ease-out-expo); }
+html.motion-ready .parallel-schedule.is-in .ps-bar { transform: scaleX(1); }
+@media (max-width: 63.99rem) { html.motion-ready .parallel-schedule .ps-bar { transform: none; } }

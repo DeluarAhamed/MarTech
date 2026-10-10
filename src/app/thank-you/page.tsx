@@ -16,7 +16,7 @@ export default function ThankYouPage() {
       <div className="page-x container-max pb-28">
         <SectionLabel code="K-01" className="text-stone-ink">Received</SectionLabel>
         <h1 className="mt-6 max-w-[16ch] text-display-l">
-          Thanks — your request is with our team.
+          Thank you. Your request is with our team.
         </h1>
         <p className="mt-8 max-w-xl text-body-l text-carbon/80">
           {response ? `${response.statement}. ` : "A project consultant will be in touch. "}

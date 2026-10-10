@@ -29,7 +29,7 @@ const tracks = [
     segments: [
       { label: "Permits", start: 0, end: 30 },
       { label: "Sitework", start: 30, end: 52 },
-      { label: "Framing, MEP & finishes on site — sequential and weather-exposed", start: 52, end: 100 },
+      { label: "Framing, MEP & finishes on site, sequential and weather-exposed", start: 52, end: 100 },
     ],
   },
 ];

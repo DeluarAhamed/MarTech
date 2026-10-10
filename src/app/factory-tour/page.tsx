@@ -5,7 +5,7 @@ import { media } from "@/content/media";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: "Schedule a Factory Tour — Salt Lake City",
+  title: "Schedule a Factory Tour in Salt Lake City",
   description: "Request a tour of MAR Technology's modular manufacturing hub in Salt Lake City, Utah.",
   alternates: { canonical: "/factory-tour/" },
 };

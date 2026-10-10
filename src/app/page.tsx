@@ -5,8 +5,9 @@ import { ViewTransition } from "react";
 import { GalleryRing } from "@/components/gallery-ring";
 import { HeroMedia } from "@/components/hero-media";
 import { Faq, PathPanel } from "@/components/home-sections";
-import { MadeInUsaTag } from "@/components/made-in-usa";
-import { Bullet, ButtonLink, Figure, cx } from "@/components/ui";
+import { MadeInUsaSeal, MadeInUsaTag } from "@/components/made-in-usa";
+import { Bullet, ButtonLink, Figure, SectionLabel, cx } from "@/components/ui";
+import { NumberedCards, SectionHead } from "@/components/blocks";
 import { approvedClaim, type ClaimKey } from "@/content/claims";
 import { capabilities, hero, heroCopy } from "@/content/home";
 import { media, type Media } from "@/content/media";
@@ -49,7 +50,7 @@ export default function HomePage() {
   return (
     <>
       {/* 01 — Brand wordmark (logo lockup at display scale) + cinematic media with the value proposition */}
-      <section className="page-x container-max pt-16 md:pt-20">
+      <section className="page-x container-max pt-20 md:pt-24">
         <p
           aria-hidden="true"
           className="hero-line overflow-hidden font-brand leading-[0.82] font-bold text-navy whitespace-nowrap [container-type:inline-size]"
@@ -67,12 +68,14 @@ export default function HomePage() {
             <HeroMedia image={hero.image} video={hero.video} />
             <div aria-hidden="true" className="absolute inset-0 hidden bg-gradient-to-tr from-carbon/90 via-carbon/35 to-transparent lg:block" />
             <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2 lg:top-5 lg:left-5">
-              <MadeInUsaTag tone="dark" className="bg-carbon/40 backdrop-blur-sm" />
+              <MadeInUsaTag tone="dark" detail />
               {hero.video?.provenance !== "footage" ? (
                 <span className="label bg-carbon/50 px-2 py-1.5 text-[0.625rem] leading-none text-white/85">Rendering</span>
               ) : null}
             </div>
           </div>
+
+          <MadeInUsaSeal className="absolute -top-10 right-10 z-10 hidden xl:grid" />
 
           {/* Value proposition: overlaid on desktop, below the image on small screens */}
           <div className="mt-6 lg:absolute lg:bottom-0 lg:left-0 lg:mt-0 lg:max-w-[46rem] lg:p-10 lg:text-white">
@@ -80,7 +83,7 @@ export default function HomePage() {
               Modular buildings, engineered for developers.
             </h1>
             <p className="hero-fade-late mt-4 max-w-xl text-[1.05rem] text-stone-ink lg:text-white/80">
-              Homes, townhomes, classrooms and flex space — manufactured in our Salt Lake City facility while your site
+              Homes, townhomes, classrooms and flex space, manufactured in our Salt Lake City facility while your site
               is prepared. Serving developers nationwide.
             </p>
             <div className="hero-fade-late mt-7 flex flex-wrap gap-3">
@@ -120,7 +123,7 @@ export default function HomePage() {
             <p data-reveal className="statement lg:indent-[33.5%]">
               <strong className="font-bold text-navy">Built for developers, not one-off projects.</strong> Whether it&apos;s
               temporary housing, classrooms, office space, single-family communities, ADUs or multifamily, we speak
-              your language — an off-site model that controls the variables, with fixed-price bids for forecastable
+              your language: an off-site model that controls the variables, with fixed-price bids for forecastable
               planning. {heroCopy.sub}
             </p>
             <div data-reveal className="mt-10 flex flex-wrap gap-3">
@@ -156,7 +159,7 @@ export default function HomePage() {
       <section className="page-x container-max py-28 text-center lg:py-44">
         <h2 data-reveal className="text-display-m">Explore our models</h2>
         <p data-reveal className="mx-auto mt-5 max-w-md text-stone-ink">
-          Three engineered standards — single module, single-family and townhome — ready to configure, finish and scale
+          Three engineered standards: single module, single-family and townhome. Ready to configure, finish and scale
           to your project. Or bring your own plans.
         </p>
         <div data-reveal className="mt-8">
@@ -172,7 +175,7 @@ export default function HomePage() {
       <section className="page-x container-max">
         <GalleryRing images={ring} left="Engineered off-site." right="Built to scale.">
           <p className="text-sm">
-            Every MAR Technology building is designed, engineered and produced in a climate-controlled facility — then
+            Every MAR Technology building is designed, engineered and produced in a climate-controlled facility, then
             delivered ready to set on your foundations.
           </p>
           <div className="mt-5">
@@ -181,76 +184,40 @@ export default function HomePage() {
         </GalleryRing>
       </section>
 
-      {/* 06 — Capabilities (services pattern) */}
-      <section className="section-y">
-        <div className="grid-4 gap-y-12 pr-5 lg:pr-5">
-          <div className="lg:col-span-2 lg:sticky lg:top-24 lg:self-start">
-            <h2 data-reveal className="page-x max-w-md text-display-m lg:pl-[calc(1.25rem+8%)]">
-              Your vision. Built to suit.
-            </h2>
-            <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
-              <div data-reveal="clip" className="relative aspect-[2/3] md:-ml-0">
-                <Figure media={media.housing} sizes="(min-width:1024px) 26vw, 100vw" />
-              </div>
-              <div className="page-x self-end md:px-0">
-                <p data-reveal className="text-stone-ink">
-                  MAR Technology manufactures more than housing. Residential, commercial, educational, workforce and
-                  custom applications give developers more ways to build.
-                </p>
-                <div data-reveal className="mt-6">
-                  <ButtonLink href="/solutions/">Solutions</ButtonLink>
-                </div>
-              </div>
+      {/* 06 — Capabilities */}
+      <section className="page-x container-max section-y">
+        <div className="grid-4 gap-y-12">
+          <div className="md:col-span-2 lg:sticky lg:top-28 lg:self-start lg:pr-[10%]">
+            <SectionLabel code="A-06" className="text-stone-ink">Our modular manufacturing capabilities</SectionLabel>
+            <h2 data-reveal className="mt-5 text-display-m">Your vision. Built to suit.</h2>
+            <p data-reveal className="mt-5 max-w-md text-[1.05rem] text-stone-ink">
+              MAR Technology manufactures more than housing. Residential, commercial, educational, workforce and custom
+              applications give developers more ways to build.
+            </p>
+            <div data-reveal className="mt-8">
+              <ButtonLink href="/solutions/">All solutions</ButtonLink>
+            </div>
+            <div data-reveal className="cut-bl relative mt-10 aspect-[4/3] overflow-hidden [--cut:2.5rem]">
+              <Figure media={media.housing} sizes="(min-width:1024px) 42vw, 100vw" />
             </div>
           </div>
-          <ol className="page-x space-y-5 lg:col-span-2 lg:col-start-3 lg:mt-40 lg:ml-[25%] lg:px-0">
-            {capabilities.map((c, i) => (
-              <li key={c.code} data-reveal>
-                <Link href={c.href} className="group block border border-hairline bg-white transition-colors hover:border-carbon">
-                  <div className="grid grid-cols-[4.5rem_1fr] border-b border-hairline">
-                    <span className="border-r border-hairline px-5 py-4 text-sm font-extrabold tabular-nums">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="px-5 py-4 text-h3 font-light">{c.title}</h3>
-                  </div>
-                  <div className="grid grid-cols-[4.5rem_1fr]">
-                    <span />
-                    <div className="flex min-h-48 flex-col justify-end px-5 pt-16 pb-6">
-                      <p className="text-[0.95rem] text-stone-ink">{c.body}</p>
-                      <span className="mt-4 inline-flex items-center gap-2 text-[0.8125rem] font-medium tracking-[0.04em] uppercase">
-                        <Bullet /> Learn more
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <div className="md:col-span-2 lg:col-start-3">
+            <NumberedCards columns={2} items={capabilities.map((c) => ({ title: c.title, body: c.body, href: c.href }))} />
+          </div>
         </div>
       </section>
 
-      {/* 07 — Process, card row */}
+      {/* 07 — Process */}
       <section className="page-x container-max pb-28 lg:pb-44">
-        <div className="grid-4 items-end gap-y-6">
-          <h2 data-reveal className="text-display-m md:col-span-2">A four-step delivery process</h2>
-          <p data-reveal className="text-stone-ink lg:col-start-4">
-            A predictable, engineered path from concept to occupancy — designed around developer schedules and lender
-            milestones.
-          </p>
-        </div>
-        <ol data-reveal data-reveal-group className="grid-4 mt-12 gap-y-5">
-          {processSteps.map((s) => (
-            <li key={s.n} className="flex flex-col border border-hairline">
-              <div className="grid grid-cols-[3.5rem_1fr] border-b border-hairline">
-                <span className="border-r border-hairline px-4 py-4 text-sm font-extrabold tabular-nums">{s.n}</span>
-                <h3 className="px-4 py-4 text-lg font-light">{s.title}</h3>
-              </div>
-              <p className="flex-1 px-4 pt-14 pb-5 text-[0.95rem] text-stone-ink">{s.body}</p>
-            </li>
-          ))}
-        </ol>
-        <div className="mt-10">
-          <ButtonLink href="/process/" variant="secondary">Our process</ButtonLink>
+        <SectionHead
+          code="A-07"
+          label="A four-step delivery process"
+          title="From concept to occupancy."
+          intro="A predictable, engineered path designed around developer schedules and lender milestones."
+          action={<ButtonLink href="/process/" variant="secondary">Our process</ButtonLink>}
+        />
+        <div className="mt-12">
+          <NumberedCards items={processSteps.map((s) => ({ title: s.title, body: s.body }))} />
         </div>
       </section>
 
@@ -262,7 +229,7 @@ export default function HomePage() {
             <div className="mt-16 grid gap-5 md:grid-cols-2">
               <div className="md:col-start-2">
                 <p data-reveal className="text-stone-ink">
-                  FLEX™ — Flexible Localized Expansion &amp; Execution. For qualifying larger developments, we establish
+                  FLEX™ means Flexible Localized Expansion &amp; Execution. For qualifying larger developments, we establish
                   manufacturing capacity closer to your site, reducing freight distance and keeping production aligned
                   with your schedule.
                 </p>

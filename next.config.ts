@@ -5,7 +5,7 @@ import type { NextConfig } from "next";
 const legacyRedirects = [
   ["/what-we-do/", "/solutions/"],
   ["/how-we-do-it/", "/process/"],
-  ["/modular-for-developers/", "/solutions/developers/"],
+  ["/solutions/developers/", "/modular-for-developers/"],
   ["/single-module/", "/models/bohemian/"],
   ["/single-family/", "/models/solterra/"],
   ["/townhome/", "/models/castello/"],

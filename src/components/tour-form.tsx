@@ -58,13 +58,13 @@ export function TourForm() {
           `Name: ${data.firstName} ${data.lastName}`,
           `Company: ${data.company}`,
           `Email: ${data.email}`,
-          `Phone: ${data.phone || "—"}`,
-          `Group size: ${data.groupSize || "—"}`,
-          `Preferred dates: ${data.preferredDates || "—"}`,
+          `Phone: ${data.phone || "Not provided"}`,
+          `Group size: ${data.groupSize || "Not provided"}`,
+          `Preferred dates: ${data.preferredDates || "Flexible"}`,
           "",
           data.message,
         ].join("\n");
-        setMailFallback(`mailto:${site.contacts.sales.email}?subject=${encodeURIComponent(`Factory tour request — ${data.company}`)}&body=${encodeURIComponent(body)}`);
+        setMailFallback(`mailto:${site.contacts.sales.email}?subject=${encodeURIComponent(`Factory tour request: ${data.company}`)}&body=${encodeURIComponent(body)}`);
         throw new Error("We couldn't submit your request online right now. You can send the same details by email in one click:");
       }
       if (!res.ok || !json.ok) throw new Error(json.error ?? "Something went wrong.");

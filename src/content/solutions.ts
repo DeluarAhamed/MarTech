@@ -31,7 +31,7 @@ export const solutions: Solution[] = [
     points: [
       {
         title: "Community-grade engineering",
-        body: "Structural systems, MEP and envelope assemblies designed for repetition, value engineering and lender due diligence — without compromising curb appeal.",
+        body: "Structural systems, MEP and envelope assemblies designed for repetition, value engineering and lender due diligence, without compromising curb appeal.",
       },
       {
         title: "Predictable pro formas",
@@ -58,7 +58,7 @@ export const solutions: Solution[] = [
     navLabel: "Education & public sector",
     headline: "Classroom space, built while the site is prepared.",
     intro:
-      "Temporary and permanent modular classrooms for schools, campuses and growing communities — designed to your interior specification and manufactured off-site.",
+      "Temporary and permanent modular classrooms for schools, campuses and growing communities. Designed to your interior specification and manufactured off-site.",
     image: media.classroom,
     formPreset: "classroom",
     points: [
@@ -87,7 +87,7 @@ export const solutions: Solution[] = [
     navLabel: "Workforce & flex space",
     headline: "Adaptable space where it's needed.",
     intro:
-      "Employee housing, temporary offices, workforce facilities and relocatable PMRVs — flexible modular structures ready for your build-out.",
+      "Employee housing, temporary offices, workforce facilities and relocatable PMRVs. Flexible modular structures ready for your build-out.",
     image: media.office,
     formPreset: "office-flex",
     points: [
@@ -116,7 +116,7 @@ export const solutions: Solution[] = [
     navLabel: "FLEX™ localized manufacturing",
     headline: "We bring the factory to the project.",
     intro:
-      "FLEX™ — Flexible Localized Expansion & Execution — establishes manufacturing capacity closer to large developments, reducing freight distance and aligning production with your schedule.",
+      "FLEX™, Flexible Localized Expansion & Execution, establishes manufacturing capacity closer to large developments, reducing freight distance and aligning production with your schedule.",
     image: media.moduleCommunity,
     formPreset: "flex",
     points: [
@@ -161,6 +161,11 @@ export const processSteps = [
     body: "Exterior detailing, interior finishes, punch list and coordinated inspections toward certificate of occupancy.",
   },
 ];
+
+/** Canonical URL for a solution. The developers solution lives on its legacy URL to keep its search equity. */
+export function solutionHref(slug: string) {
+  return slug === "developers" ? "/modular-for-developers/" : `/solutions/${slug}/`;
+}
 
 export function getSolution(slug: string) {
   return solutions.find((s) => s.slug === slug);

@@ -1,5 +1,13 @@
 # 13 — Build Status
 
+> **2026-10-10 — Brand, IA and content release.**
+> - Official logo assets cut from the supplied file (`public/brand/*`, script in scratch `logo-assets.js`); vector mark for favicon.
+> - Typography: Archivo variable (weight + width axes) for display and body; one font file.
+> - Mega-menu navigation (Developers, Solutions, Models, Locations, Insights, Company) on desktop; accordion menu on mobile.
+> - New pages: `/modular-for-developers/` (legacy URL restored; `/solutions/developers/` now redirects to it), `/locations/` with interactive map (generated from US Census boundaries via `scripts/build-us-map.mjs`), 11 Western state pages, Contact us, Insights blog (6 articles) and a redesigned Process page.
+> - Service area: all 50 states; Western states (UT, ID, NV, AZ, CO, WY, MT, NM, CA, OR, WA) served from the Salt Lake City factory for freight efficiency. **Confirm whether Alaska and Hawaii should be listed as Western-served** (currently nationwide/by project).
+> - No em dashes in user-facing copy. Bold Made in USA badge + rotating seal (still claim-controlled).
+
 > **2026-10-10 — Staging deployed.** https://mar-technology.vercel.app (Vercel project `mar-technology`, auto-deploys from `main` of github.com/DeluarAhamed/MarTech). Search indexing is blocked on staging (robots.txt, `X-Robots-Tag`, meta robots) until `NEXT_PUBLIC_ALLOW_INDEXING=true` is set at cutover. Lead submissions return 503 until Supabase env vars are added.
 >
 > **Layout rework (client request):** homepage and shared components now follow the Construction Désourdy layout system — full-width wordmark over cinematic media, 4-column grid with 20px margins, light statement type with first-line indent, staggered showcase cards with bullet/name/number captions, centred "Explore" block, pinned ring collage panel, services-style numbered cards beside a sticky heading and edge-bleeding image, history-style FLEX™ block, full-bleed featured model with glass caption, light 4-column footer, pill buttons with bullet. MAR copy, imagery and palette only — no reference copy or assets.

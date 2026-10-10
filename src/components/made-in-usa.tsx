@@ -2,9 +2,32 @@ import { approvedClaim } from "@/content/claims";
 import { cx } from "./ui";
 
 /**
- * "Made in USA" tag. Renders only while the `madeInUsa` claim is approved in the claims registry,
- * so it can be withdrawn site-wide in one place if the FTC standard can't be documented.
+ * Made in USA badge + seal. Both render only while the `madeInUsa` claim is approved in the
+ * claims registry, so they can be withdrawn site-wide in one place.
  */
+
+/** US flag, 19:10 proportions: 13 stripes and a starred canton. */
+export function UsFlag({ className }: { className?: string }) {
+  const stripe = 10 / 13;
+  return (
+    <svg viewBox="0 0 19 10" className={cx("h-3.5 w-auto shrink-0 rounded-[1px] shadow-[0_0_0_0.5px_rgb(0_0_0/0.15)]", className)} aria-hidden="true">
+      <rect width="19" height="10" fill="#fff" />
+      {Array.from({ length: 7 }, (_, i) => (
+        <rect key={i} y={i * 2 * stripe} width="19" height={stripe} fill="#B22234" />
+      ))}
+      <rect width="7.6" height={stripe * 7} fill="#3C3B6E" />
+      <g fill="#fff">
+        {Array.from({ length: 9 }, (_, row) =>
+          Array.from({ length: row % 2 === 0 ? 6 : 5 }, (_, col) => (
+            <circle key={`${row}-${col}`} cx={0.63 + col * 1.27 + (row % 2 ? 0.63 : 0)} cy={0.42 + row * 0.6} r="0.22" />
+          )),
+        )}
+      </g>
+    </svg>
+  );
+}
+
+/** Bold inline badge: flag + MADE IN USA (+ optional location line). */
 export function MadeInUsaTag({ tone = "light", detail = false, className }: { tone?: "light" | "dark"; detail?: boolean; className?: string }) {
   const claim = approvedClaim("madeInUsa");
   if (!claim) return null;
@@ -12,45 +35,56 @@ export function MadeInUsaTag({ tone = "light", detail = false, className }: { to
   return (
     <span
       className={cx(
-        "label inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 border px-2.5 py-1.5 text-[0.65rem] leading-none [&>span]:whitespace-nowrap",
-        dark ? "border-ivory/30 text-ivory" : "border-carbon/25 text-carbon",
+        "inline-flex max-w-full flex-wrap items-stretch overflow-hidden rounded-[3px] border text-[0.7rem] leading-none font-bold tracking-[0.14em] uppercase [font-stretch:110%]",
+        dark ? "border-white/35 bg-white/10 text-white backdrop-blur-sm" : "border-navy/25 bg-white text-navy",
         className,
       )}
     >
-      <UsaMark />
-      <span>{claim.statement}</span>
+      <span className="flex items-center gap-2 px-2.5 py-2 whitespace-nowrap">
+        <UsFlag />
+        {claim.statement}
+      </span>
       {detail && claim.label ? (
-        <>
-          <span aria-hidden="true" className={cx("h-3 w-px", dark ? "bg-ivory/30" : "bg-carbon/25")} />
-          <span className={dark ? "text-ivory/70" : "text-stone-ink"}>{claim.label}</span>
-        </>
+        <span
+          className={cx(
+            "flex items-center border-l px-2.5 py-2 font-semibold tracking-[0.1em] whitespace-nowrap",
+            dark ? "border-white/25 text-white/80" : "border-navy/15 bg-navy-tint text-navy/80",
+          )}
+        >
+          {claim.label.replace("Manufactured in ", "")}
+        </span>
       ) : null}
     </span>
   );
 }
 
-/** Abstract stars-and-stripes mark (not a flag reproduction). */
-function UsaMark() {
+/** Circular seal with slowly rotating type and the flag at its centre. */
+export function MadeInUsaSeal({ className, tone = "light" }: { className?: string; tone?: "light" | "dark" }) {
+  const claim = approvedClaim("madeInUsa");
+  if (!claim) return null;
+  const dark = tone === "dark";
+  const text = "MADE IN USA • MANUFACTURED IN SALT LAKE CITY, UTAH • ";
   return (
-    <svg viewBox="0 0 16 11" aria-hidden="true" className="h-[0.6rem] w-auto shrink-0">
-      <rect width="16" height="11" fill="currentColor" opacity="0.12" />
-      <g fill="#a23b2a">
-        <rect y="0" width="16" height="1.57" />
-        <rect y="3.14" width="16" height="1.57" />
-        <rect y="6.28" width="16" height="1.57" />
-        <rect y="9.43" width="16" height="1.57" />
-      </g>
-      <rect width="7" height="6.28" fill="#1f3a5f" />
-      <g fill="#f5f3ee">
-        <circle cx="1.8" cy="1.6" r="0.55" />
-        <circle cx="3.5" cy="1.6" r="0.55" />
-        <circle cx="5.2" cy="1.6" r="0.55" />
-        <circle cx="2.65" cy="3.1" r="0.55" />
-        <circle cx="4.35" cy="3.1" r="0.55" />
-        <circle cx="1.8" cy="4.6" r="0.55" />
-        <circle cx="3.5" cy="4.6" r="0.55" />
-        <circle cx="5.2" cy="4.6" r="0.55" />
-      </g>
-    </svg>
+    <div
+      role="img"
+      aria-label="Made in USA. Manufactured in Salt Lake City, Utah."
+      className={cx(
+        "relative grid size-32 place-items-center rounded-full",
+        dark ? "bg-navy text-white" : "bg-white text-navy shadow-[0_10px_40px_rgb(23_26_25/0.18)]",
+        className,
+      )}
+    >
+      <svg viewBox="0 0 120 120" className="absolute inset-0 size-full motion-safe:animate-[spin_28s_linear_infinite]" aria-hidden="true">
+        <defs>
+          <path id="seal-circle" d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0" />
+        </defs>
+        <text fill="currentColor" style={{ fontSize: 8.6, fontWeight: 700, letterSpacing: "0.12em" }}>
+          <textPath href="#seal-circle" textLength="292">{text}</textPath>
+        </text>
+      </svg>
+      <span className={cx("grid size-[3.6rem] place-items-center rounded-full border", dark ? "border-white/30" : "border-navy/20")}>
+        <UsFlag className="h-5" />
+      </span>
+    </div>
   );
 }

@@ -5,7 +5,7 @@ import { site } from "./site";
 export const faqs: { q: string; a: string }[] = [
   {
     q: "Can you build from our existing plans?",
-    a: "Yes. We can manufacture from your existing plan set, or provide a full range of design services — from schematic design through stamped construction documents.",
+    a: "Yes. We can manufacture from your existing plan set, or provide a full range of design services, from schematic design through stamped construction documents.",
   },
   {
     q: "Where do you deliver?",
@@ -25,7 +25,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "What is FLEX™?",
-    a: "FLEX™ — Flexible Localized Expansion & Execution — establishes manufacturing capacity closer to qualifying larger developments, reducing freight distance and aligning production with your schedule.",
+    a: "FLEX™, Flexible Localized Expansion & Execution, establishes manufacturing capacity closer to qualifying larger developments, reducing freight distance and aligning production with your schedule.",
   },
   {
     q: "Can we visit the factory?",

@@ -12,7 +12,7 @@ export const projectTypes = [
   { value: "office-flex", label: "Office / flex space" },
   { value: "workforce", label: "Workforce / employee housing" },
   { value: "pmrv", label: "PMRV" },
-  { value: "flex", label: "Large project — FLEX™" },
+  { value: "flex", label: "Large project (FLEX™)" },
   { value: "other", label: "Something else" },
 ] as const;
 

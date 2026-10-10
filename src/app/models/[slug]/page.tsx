@@ -19,7 +19,7 @@ export async function generateMetadata(props: PageProps<"/models/[slug]">): Prom
   const model = getModel(slug);
   if (!model) return {};
   return {
-    title: `${model.name} — Modular ${model.category}`,
+    title: `${model.name} | Modular ${model.category}`,
     description: `${model.name}: ${model.summary}`,
     alternates: { canonical: `/models/${model.slug}/` },
     openGraph: { images: [{ url: model.hero.src, width: model.hero.width, height: model.hero.height, alt: model.hero.alt }] },

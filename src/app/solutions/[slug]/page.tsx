@@ -7,7 +7,7 @@ import { models } from "@/content/models";
 import { getSolution, solutions } from "@/content/solutions";
 
 export function generateStaticParams() {
-  return solutions.map((s) => ({ slug: s.slug }));
+  return solutions.filter((s) => s.slug !== "developers").map((s) => ({ slug: s.slug }));
 }
 
 export const dynamicParams = false;

@@ -79,10 +79,12 @@ type LeadFormProps = {
   /** Preset project type / model. When omitted on the page variant, they are read from the URL (?type=, ?model=). */
   initialType?: string;
   initialModel?: string;
+  /** Two-letter state code preset (e.g. from a state location page). */
+  initialState?: string;
   variant?: "page" | "drawer";
 };
 
-export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFormProps) {
+export function LeadForm({ initialType, initialModel, initialState, variant = "page" }: LeadFormProps) {
   const router = useRouter();
   const formId = useId();
   const [step, setStep] = useState(0);
@@ -114,12 +116,15 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
     const params = variant === "page" ? new URLSearchParams(window.location.search) : null;
     const type = initialType ?? params?.get("type") ?? undefined;
     const model = initialModel ?? params?.get("model") ?? undefined;
+    const stateCode = (initialState ?? params?.get("state") ?? "").toUpperCase();
+    const validState = usStates.some(([c]) => c === stateCode);
     const validType = projectTypes.some((t) => t.value === type);
     const validModel = model === "custom" || models.some((m) => m.slug === model);
     const next = {
       ...draft,
       projectType: validType ? type! : draft.projectType,
       modelInterest: validModel && !draft.modelInterest.includes(model!) ? [...draft.modelInterest, model!] : draft.modelInterest,
+      state: validState ? stateCode : draft.state,
     };
     // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from sessionStorage
     setData(next);
@@ -127,7 +132,7 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
     hydrated.current = true;
     startedAt.current = Date.now();
     track("form_start", { form_type: "project", form_variant: variant });
-  }, [initialType, initialModel, variant]);
+  }, [initialType, initialModel, initialState, variant]);
 
   useEffect(() => {
     if (!hydrated.current) return;
@@ -265,7 +270,7 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
             <fieldset>
               <legend className="label text-stone-ink">Models of interest (optional)</legend>
               <div className="mt-4 grid gap-2 @lg:grid-cols-2">
-                {[...models.map((m) => ({ value: m.slug, label: `${m.name} — ${m.category}` })), { value: "custom", label: "Build from our own plans" }].map((opt) => {
+                {[...models.map((m) => ({ value: m.slug, label: `${m.name}: ${m.category}` })), { value: "custom", label: "Build from our own plans" }].map((opt) => {
                   const checked = data.modelInterest.includes(opt.value);
                   return (
                     <label key={opt.value} className={choiceClass(checked)}>
@@ -340,7 +345,7 @@ export function LeadForm({ initialType, initialModel, variant = "page" }: LeadFo
             </Field>
             <label className="flex items-start gap-3 text-sm text-stone-ink @lg:col-span-2">
               <input type="checkbox" checked={data.marketingConsent} onChange={(e) => set("marketingConsent", e.target.checked)} className="mt-0.5 size-5 shrink-0 accent-carbon" />
-              Send me occasional updates about new models and insights. (Optional — we&apos;ll respond to this request either way.)
+              Send me occasional updates about new models and insights. (Optional. We&apos;ll respond to this request either way.)
             </label>
             <p className="text-xs text-stone-ink @lg:col-span-2">
               We use these details only to respond to your project enquiry and never share them without your consent.
@@ -397,7 +402,7 @@ function buildMailto(d: Data) {
   const lines = [
     `Project type: ${labelOf(projectTypes, d.projectType)}`,
     `Scale: ${d.unitsUnknown || !d.units ? "Not sure yet" : d.units}`,
-    `Models of interest: ${d.modelInterest.join(", ") || "—"}`,
+    `Models of interest: ${d.modelInterest.join(", ") || "None"}`,
     `Location: ${d.city}, ${d.state} ${d.zip}`.trim(),
     `Project stage: ${labelOf(projectStages, d.projectStage)}`,
     `Target delivery: ${labelOf(timelines, d.timeline)}`,
@@ -406,11 +411,11 @@ function buildMailto(d: Data) {
     `Company: ${d.company}`,
     `Role: ${labelOf(roles, d.role)}`,
     `Email: ${d.email}`,
-    `Phone: ${d.phone || "—"}`,
+    `Phone: ${d.phone || "Not provided"}`,
     "",
     d.message,
   ];
-  const subject = `Project enquiry — ${labelOf(projectTypes, d.projectType)} — ${d.company}`;
+  const subject = `Project enquiry: ${labelOf(projectTypes, d.projectType)}, ${d.company}`;
   return `mailto:${site.contacts.sales.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
 

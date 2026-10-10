@@ -77,7 +77,7 @@ export function FlexSection({ code = "A-08", withCta = true }: { code?: string; 
               We bring the factory <span className="text-bronze">to the project.</span>
             </h2>
             <p data-reveal className="mt-8 max-w-xl text-body-l text-ivory/75">
-              FLEX™ — Flexible Localized Expansion &amp; Execution. For qualifying large developments, we establish
+              FLEX™ means Flexible Localized Expansion &amp; Execution. For qualifying large developments, we establish
               manufacturing capacity closer to your site, reducing freight distance and transit risk and keeping
               production aligned with your schedule.
             </p>
